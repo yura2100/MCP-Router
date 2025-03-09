@@ -14,17 +14,16 @@ export function HeroSection() {
           <div className="flex flex-col justify-center space-y-4">
             <div className="space-y-2">
               <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none text-center">
-                Manage Your MCP Servers in One Place
+                AI Integrations Made Easy
               </h1>
               <p className="text-muted-foreground md:text-xl text-center">
-                Connect AI assistants to your data sources with the Model Context Protocol (MCP). Our platform helps you
-                manage all your MCP servers in one place.
+                Easily connect AI to your workflow — no coding, no complexity, just seamless automation with MCP.
               </p>
             </div>
             <div className="flex justify-center">
               <Button asChild size="lg">
                 <Link href="/servers">
-                  Browse MCP Servers
+                  Browse Integrations
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>

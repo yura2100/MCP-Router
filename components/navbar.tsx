@@ -20,7 +20,7 @@ export function Navbar({ isAuthenticated }: NavbarProps) {
   // Split navigation items into public and private
   const publicNavItems = [
     {
-      name: "MCP Servers",
+      name: "Integrations",
       href: "/servers",
       icon: <Layers className="h-4 w-4 mr-2" />,
     },
