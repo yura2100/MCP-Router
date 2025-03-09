@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
-import {Wrench, ExternalLink, ServerIcon} from "lucide-react"
+import {Wrench, ExternalLink} from "lucide-react"
 import { ServerStatusBadge } from "@/components/server-status-badge"
 import { Switch } from "@/components/ui/switch"
 import {DashboardServer} from "@/app/dashboard/_hooks/use-dashboard-servers-query";
@@ -9,6 +9,7 @@ import {useRestartServerMutation} from "@/app/servers/[id]/_hooks/use-restart-se
 import {usePauseServerMutation} from "@/app/servers/[id]/_hooks/use-pause-server-mutation";
 import {useToggleToolMutation} from "@/app/servers/[id]/_hooks/use-toggle-tool-mutation";
 import {cn} from "@/lib/utils";
+import {ServerIcon} from "@/components/server-icon";
 
 interface AvailableToolsProps {
   servers: DashboardServer[]
@@ -34,7 +35,7 @@ export function AvailableTools({ servers }: AvailableToolsProps) {
             <CardHeader className="pb-2">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
-                  <ServerIcon className="h-8 w-8 text-primary" />
+                  <ServerIcon slug={server.slug} />
                   <div>
                     <CardTitle className="text-xl flex items-center">
                       {server.name}

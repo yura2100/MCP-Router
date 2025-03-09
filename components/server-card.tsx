@@ -1,9 +1,10 @@
 import Link from "next/link"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import {Download, ServerIcon, Star, Tag} from "lucide-react"
+import {Download, Star, Tag} from "lucide-react"
 import { ServerStatusBadge } from "@/components/server-status-badge"
 import {PartialServer} from "@/app/servers/_hooks/use-servers-query";
+import {ServerIcon} from "@/components/server-icon";
 
 interface ServerCardProps {
   server: PartialServer
@@ -17,7 +18,8 @@ export function ServerCard({ server, className }: ServerCardProps) {
         <CardHeader className="pb-2">
           <div className="flex items-start justify-between">
             <div className="flex items-center space-x-4">
-              <ServerIcon className="h-8 w-8 text-primary" />
+              {/*<ServerIcon className="h-8 w-8 text-primary" />*/}
+              <ServerIcon slug={server.slug} />
               <div>
                 <CardTitle className="text-xl">{server.name}</CardTitle>
                 <CardDescription className="text-xs">{server.maintainer}</CardDescription>

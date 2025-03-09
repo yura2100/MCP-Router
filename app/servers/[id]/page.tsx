@@ -3,13 +3,14 @@
 import { useState } from "react"
 import { useParams, useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import {ArrowLeft, Info, SettingsIcon, AlertTriangle, Wrench, ServerIcon} from "lucide-react"
+import {ArrowLeft, Info, SettingsIcon, AlertTriangle, Wrench} from "lucide-react"
 import {Tabs, TabsList, TabsTrigger} from "@/components/ui/tabs"
 import { ServerStatusBadge } from "@/components/server-status-badge"
 import {ServerOverview} from "@/app/servers/[id]/_components/server-overview";
 import {ServerTools} from "@/app/servers/[id]/_components/server-tools";
 import {ServerSettings} from "@/app/servers/[id]/_components/server-settings";
 import {useServerQuery} from "@/app/servers/[id]/_hooks/use-server-query";
+import {ServerIcon} from "@/components/server-icon";
 
 export default function ServerPage() {
   const params = useParams()
@@ -33,7 +34,7 @@ export default function ServerPage() {
 
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
-            <ServerIcon className="h-8 w-8 text-primary" />
+            <ServerIcon slug={server.slug} />
             <div>
               <div className="flex items-center space-x-2">
                 <h1 className="text-3xl font-bold tracking-tight">{server.name}</h1>
