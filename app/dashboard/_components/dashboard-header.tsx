@@ -9,7 +9,7 @@ export function DashboardHeader() {
         <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
         <Button variant="outline" size="sm" asChild>
           <Link href="/servers">
-            View All Servers
+            Browse Servers
             <ArrowRight className="ml-2 h-4 w-4" />
           </Link>
         </Button>

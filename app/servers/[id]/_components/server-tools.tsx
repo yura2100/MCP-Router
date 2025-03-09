@@ -21,7 +21,7 @@ export function ServerTools({ slug, tools: initialTools }: ServerToolsProps) {
   const [tools, setTools] = useState(initialTools);
   const [expandedTools, setExpandedTools] = useState<Record<string, boolean>>({})
   const [editingParam, setEditingParam] = useState<{ toolId: string; paramName: string } | null>(null);
-  const { mutate, isPending } = useUpdateToolsMutation(slug)
+  const { mutate, isPending } = useUpdateToolsMutation()
 
   const toggleToolExpansion = (toolId: string) => {
     setExpandedTools((prev) => ({
@@ -198,7 +198,7 @@ export function ServerTools({ slug, tools: initialTools }: ServerToolsProps) {
         </div>
       </CardContent>
       <CardFooter>
-        <Button disabled={isPending} onClick={() => mutate({ tools })} className="ml-auto">
+        <Button disabled={isPending} onClick={() => mutate({ slug, tools })} className="ml-auto">
           <Save className="h-4 w-4 mr-2" />
           Save Tool Settings
         </Button>

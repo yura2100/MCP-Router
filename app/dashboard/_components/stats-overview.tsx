@@ -6,7 +6,7 @@ interface StatsOverviewProps {
     total: number
     active: number
     paused: number
-    needsConfiguration: number
+    misconfigured: number
   }
 }
 
@@ -46,7 +46,7 @@ export function StatsOverview({ stats }: StatsOverviewProps) {
           <Settings className="h-4 w-4 text-blue-600" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">{stats.needsConfiguration}</div>
+          <div className="text-2xl font-bold">{stats.misconfigured}</div>
         </CardContent>
       </Card>
     </div>

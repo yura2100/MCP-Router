@@ -3,20 +3,23 @@ import {createApiClient} from "@/lib/api";
 import {Server, USE_SERVER_QUERY_KEY} from "@/app/servers/[id]/_hooks/use-server-query";
 import {USE_SERVERS_QUERY_KEY} from "@/app/servers/_hooks/use-servers-query";
 import {useToast} from "@/components/ui/use-toast";
+import {USE_DASHBOARD_SERVERS_KEY} from "@/app/dashboard/_hooks/use-dashboard-servers-query";
 
 export type UseStartServerMutationParameters = {
   serverId: string;
+  slug: string;
 };
 
-export function useStartServerMutation(slug: string) {
+export function useStartServerMutation() {
   const queryClient = useQueryClient();
   const { toast } = useToast()
   return useMutation({
-    mutationFn: async ({ serverId }: UseStartServerMutationParameters) => {
+    mutationFn: async ({ serverId, slug }: UseStartServerMutationParameters) => {
       const server = queryClient.getQueryData<Server | null>([USE_SERVER_QUERY_KEY, slug]);
-      if (!server) return;
-      const newServer = { ...server, status: "active" };
-      queryClient.setQueryData([USE_SERVER_QUERY_KEY, slug], newServer);
+      if (server) {
+        const newServer = { ...server, status: "active" };
+        queryClient.setQueryData([USE_SERVER_QUERY_KEY, slug], newServer);
+      }
 
       const client = createApiClient();
       const response = await client.api.servers["start-server"].$post({ json: { serverId } });
@@ -25,8 +28,9 @@ export function useStartServerMutation(slug: string) {
     },
     onSettled: () => {
       return Promise.all([
-        queryClient.invalidateQueries({ queryKey: [USE_SERVER_QUERY_KEY, slug] }),
+        queryClient.invalidateQueries({ queryKey: [USE_SERVER_QUERY_KEY] }),
         queryClient.invalidateQueries({ queryKey: [USE_SERVERS_QUERY_KEY] }),
+        queryClient.invalidateQueries({ queryKey: [USE_DASHBOARD_SERVERS_KEY] }),
       ])
     },
     onSuccess: () => {

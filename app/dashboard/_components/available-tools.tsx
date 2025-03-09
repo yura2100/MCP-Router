@@ -1,18 +1,24 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
-import { Wrench, ExternalLink } from "lucide-react"
+import {Wrench, ExternalLink, ServerIcon} from "lucide-react"
 import { ServerStatusBadge } from "@/components/server-status-badge"
 import { Switch } from "@/components/ui/switch"
-import type { ServerConfig } from "@/lib/server-config"
+import {DashboardServer} from "@/app/dashboard/_hooks/use-dashboard-servers-query";
+import {useRestartServerMutation} from "@/app/servers/[id]/_hooks/use-restart-server-mutation";
+import {usePauseServerMutation} from "@/app/servers/[id]/_hooks/use-pause-server-mutation";
+import {useToggleToolMutation} from "@/app/servers/[id]/_hooks/use-toggle-tool-mutation";
+import {cn} from "@/lib/utils";
 
 interface AvailableToolsProps {
-  servers: ServerConfig[]
-  toggleServerState: (serverId: string, newState: "active" | "paused") => void
+  servers: DashboardServer[]
 }
 
-export function AvailableTools({ servers, toggleServerState }: AvailableToolsProps) {
-  const activeOrPausedServers = servers.filter((server) => server.state === "active" || server.state === "paused")
+export function AvailableTools({ servers }: AvailableToolsProps) {
+  const { mutate: restartServer, isPending: isRestartServerPending } = useRestartServerMutation();
+  const { mutate: pauseServer, isPending: isPauseServerPending } = usePauseServerMutation();
+  const { mutate: toggleTool, isPending: isToggleToolPending } = useToggleToolMutation();
+  const isPending = isRestartServerPending || isPauseServerPending || isToggleToolPending;
 
   return (
     <div className="space-y-4">
@@ -20,36 +26,49 @@ export function AvailableTools({ servers, toggleServerState }: AvailableToolsPro
         <Wrench className="h-5 w-5 text-orange-600" />
         <h2 className="text-2xl font-bold tracking-tight">Available Tools</h2>
       </div>
-      <p className="text-muted-foreground">All tools from your active and paused servers</p>
+      <p className="text-muted-foreground">All tools from your servers</p>
 
-      {activeOrPausedServers.length > 0 ? (
-        activeOrPausedServers.map((server) => (
+      {servers.length > 0 ? (
+        servers.map((server) => (
           <Card key={server.id} className="mb-6">
             <CardHeader className="pb-2">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
-                  {server.icon}
+                  <ServerIcon className="h-8 w-8 text-primary" />
                   <div>
                     <CardTitle className="text-xl flex items-center">
                       {server.name}
-                      <ServerStatusBadge state={server.state} className="ml-2" />
+                      <ServerStatusBadge state={server.status} className="ml-2" />
                     </CardTitle>
-                    <CardDescription>{server.category}</CardDescription>
+                    <CardDescription>{server.maintainer}</CardDescription>
                   </div>
                 </div>
                 <div className="flex items-center space-x-3">
+                  <div className="relative hidden sm:flex size-2.5">
+                    {server.status === "active" && (
+                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"/>)}
+                    <span className={cn("relative inline-flex size-2.5 rounded-full", server.status === "active" ? "bg-green-500" : "bg-amber-500")} />
+                  </div>
+                  <span className="hidden sm:flex text-sm text-muted-foreground">{server.status === "paused" ? "Paused" : "Active"}</span>
                   <Switch
-                    checked={server.state === "active"}
-                    onCheckedChange={(checked) => toggleServerState(server.id, checked ? "active" : "paused")}
+                    checked={server.status === "active"}
+                    disabled={isPending}
+                    onCheckedChange={() => server.status === "active" ? pauseServer({ serverId: server.id, slug: server.slug }) : restartServer({ serverId: server.id, slug: server.slug })}
                   />
-                  <Button variant="outline" size="sm" asChild>
-                    <Link href={`/servers/${server.id}`}>
+                  <Button className="hidden sm:flex" variant="outline" size="sm" asChild>
+                    <Link href={`/servers/${server.slug}`}>
                       <ExternalLink className="h-4 w-4 mr-2" />
                       View Server
                     </Link>
                   </Button>
                 </div>
               </div>
+              <Button className="sm:hidden" variant="outline" size="sm" asChild>
+                <Link href={`/servers/${server.slug}`}>
+                  <ExternalLink className="h-4 w-4 mr-2" />
+                  View Server
+                </Link>
+              </Button>
             </CardHeader>
             <CardContent>
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 mt-2">
@@ -60,8 +79,9 @@ export function AvailableTools({ servers, toggleServerState }: AvailableToolsPro
                         <CardTitle className="text-base">{tool.customName || tool.name}</CardTitle>
                         <Switch
                           id={`tool-${server.id}-${tool.id}`}
-                          checked={tool.enabled}
-                          disabled={server.state !== "active"}
+                          checked={tool.status === "active"}
+                          disabled={isPending}
+                          onCheckedChange={() => toggleTool({ toolId: tool.id, slug: server.slug })}
                         />
                       </div>
                     </CardHeader>
@@ -82,8 +102,8 @@ export function AvailableTools({ servers, toggleServerState }: AvailableToolsPro
               <div className="flex items-center text-xs text-muted-foreground">
                 <Wrench className="h-3.5 w-3.5 mr-1.5" />
                 <span>{server.tools.length} tools available</span>
-                {server.state === "active" && (
-                  <span className="ml-2">({server.tools.filter((t) => t.enabled).length} enabled)</span>
+                {server.status === "active" && (
+                  <span className="ml-2">({server.tools.filter((t) => t.status === "active").length} enabled)</span>
                 )}
               </div>
             </CardFooter>
@@ -95,8 +115,8 @@ export function AvailableTools({ servers, toggleServerState }: AvailableToolsPro
             <div className="flex flex-col items-center justify-center text-center space-y-3 py-6">
               <Wrench className="h-8 w-8 text-muted-foreground" />
               <div className="space-y-1">
-                <h3 className="text-lg font-medium">No active or paused servers</h3>
-                <p className="text-sm text-muted-foreground">Start or resume a server to see available tools.</p>
+                <h3 className="text-lg font-medium">No servers</h3>
+                <p className="text-sm text-muted-foreground">Start a server to see available tools.</p>
               </div>
               <Button asChild>
                 <Link href="/servers">Browse Servers</Link>

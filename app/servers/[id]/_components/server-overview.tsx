@@ -13,17 +13,18 @@ import {usePauseServerMutation} from "@/app/servers/[id]/_hooks/use-pause-server
 import {useRestartServerMutation} from "@/app/servers/[id]/_hooks/use-restart-server-mutation";
 import {useToggleStarMutation} from "@/app/servers/[id]/_hooks/use-toggle-star-mutation";
 import {useToggleToolMutation} from "@/app/servers/[id]/_hooks/use-toggle-tool-mutation";
+import {cn} from "@/lib/utils";
 
 type ServerOverviewProps = Server;
 
 export function ServerOverview(props: ServerOverviewProps) {
   const router = useRouter()
   const { isAuthenticated } = useAuth();
-  const { mutate: startServer, isPending: isStartServerPending } = useStartServerMutation(props.slug);
-  const { mutate: restartServer, isPending: isRestartServerPending } = useRestartServerMutation(props.slug);
-  const { mutate: pauseServer, isPending: isPauseServerPending } = usePauseServerMutation(props.slug);
-  const { mutate: toggleStar, isPending: isToggleStarPending } = useToggleStarMutation(props.slug);
-  const { mutate: toggleTool, isPending: isToggleToolPending } = useToggleToolMutation(props.slug);
+  const { mutate: startServer, isPending: isStartServerPending } = useStartServerMutation();
+  const { mutate: restartServer, isPending: isRestartServerPending } = useRestartServerMutation();
+  const { mutate: pauseServer, isPending: isPauseServerPending } = usePauseServerMutation();
+  const { mutate: toggleStar, isPending: isToggleStarPending } = useToggleStarMutation();
+  const { mutate: toggleTool, isPending: isToggleToolPending } = useToggleToolMutation();
   const isPending = isStartServerPending || isRestartServerPending || isPauseServerPending || isToggleToolPending;
 
   const renderStatusControl = () => {
@@ -31,7 +32,7 @@ export function ServerOverview(props: ServerOverviewProps) {
 
     if (props.status === "not-started") {
       return (
-        <Button variant="default" size="sm" onClick={() => startServer({ serverId: props.id })} className="flex items-center" disabled={isPending}>
+        <Button variant="default" size="sm" onClick={() => startServer({ serverId: props.id, slug: props.slug })} className="flex items-center" disabled={isPending}>
           <Play className="h-4 w-4 mr-2" />
           Start Server
         </Button>
@@ -67,13 +68,18 @@ export function ServerOverview(props: ServerOverviewProps) {
       // )
       return (
         <div className="flex items-center space-x-3">
-          <div
-            className={`h-2.5 w-2.5 rounded-full ${props.status === "active" ? "bg-green-500" : "bg-amber-500"}`}
-          />
+          <div className="relative flex size-2.5">
+            {props.status === "active" && (
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"/>)}
+            <span className={cn("relative inline-flex size-2.5 rounded-full", props.status === "active" ? "bg-green-500" : "bg-amber-500")} />
+          </div>
           <span className="text-sm text-muted-foreground">{props.status === "paused" ? "Paused" : "Active"}</span>
           <Switch
             checked={props.status === "active"}
-            onCheckedChange={() => props.status === "active" ? pauseServer({ serverId: props.id }) : restartServer({ serverId: props.id })}
+            onCheckedChange={() => props.status === "active" ? pauseServer({
+              serverId: props.id,
+              slug: props.slug
+            }) : restartServer({serverId: props.id, slug: props.slug})}
             disabled={isPending}
           />
         </div>
@@ -86,7 +92,8 @@ export function ServerOverview(props: ServerOverviewProps) {
     switch (props.status) {
       case "not-started":
         return (
-          <Button onClick={() => startServer({ serverId: props.id })} className="w-full" disabled={isPending}>
+          <Button onClick={() => startServer({serverId: props.id, slug: props.slug})} className="w-full"
+                  disabled={isPending}>
             <Play className="h-4 w-4 mr-2" />
             Start Server
           </Button>
@@ -106,7 +113,7 @@ export function ServerOverview(props: ServerOverviewProps) {
         )
       case "paused":
         return (
-          <Button onClick={() => restartServer({ serverId: props.id })} className="w-full" disabled={isPending}>
+          <Button onClick={() => restartServer({ serverId: props.id, slug: props.slug })} className="w-full" disabled={isPending}>
             <Play className="h-4 w-4 mr-2" />
             Start Server
           </Button>
@@ -184,7 +191,7 @@ export function ServerOverview(props: ServerOverviewProps) {
               </div>
               <div className="flex items-center">
                 <button
-                  onClick={() => toggleStar({ serverId: props.id })}
+                  onClick={() => toggleStar({ serverId: props.id, slug: props.slug })}
                   disabled={!isAuthenticated || props.status === "not-started" || isToggleStarPending}
                   className="flex items-center"
                   aria-label={props.isStarred ? "Unstar this server" : "Star this server"}
@@ -225,7 +232,7 @@ export function ServerOverview(props: ServerOverviewProps) {
                         <Switch
                           id={`tool-${tool.id}`}
                           checked={tool.status === "active"}
-                          onCheckedChange={() => toggleTool({ toolId: tool.id })}
+                          onCheckedChange={() => toggleTool({ toolId: tool.id, slug: props.slug })}
                           disabled={isPending}
                         />
                       )}

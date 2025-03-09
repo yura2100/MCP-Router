@@ -26,7 +26,7 @@ export interface ServerConfig {
   name: string
   description: string
   icon?: React.ReactNode
-  category: string
+  categories: string[];
   state: ServerState
   enabled: boolean // Keeping for backward compatibility
   version?: string
@@ -52,7 +52,7 @@ export const mcpServers: Record<string, ServerConfig> = {
     name: "Postgres",
     description: "Connect to PostgreSQL databases including Supabase",
     icon: React.createElement(ServerIcon, { className: "h-8 w-8 text-primary" }),
-    category: "Database",
+    categories: ["Database"],
     state: "needs_configuration",
     enabled: false,
     connectionString: "",
@@ -207,7 +207,7 @@ export const mcpServers: Record<string, ServerConfig> = {
     name: "GitHub",
     description: "Access repositories, issues, and pull requests",
     icon: React.createElement(ServerIcon, { className: "h-8 w-8 text-primary" }),
-    category: "Development",
+    categories: ["Development"],
     state: "paused",
     enabled: false,
     apiKey: "",
@@ -353,7 +353,7 @@ export const mcpServers: Record<string, ServerConfig> = {
     name: "Notion",
     description: "Query and update Notion documents and databases",
     icon: React.createElement(ServerIcon, { className: "h-8 w-8 text-primary" }),
-    category: "Knowledge Base",
+    categories: ["Knowledge Base"],
     state: "active",
     enabled: true,
     apiKey: "secret_notion_api_key",
@@ -485,7 +485,7 @@ export const mcpServers: Record<string, ServerConfig> = {
     name: "Web Search",
     description: "Search the web for information",
     icon: React.createElement(ServerIcon, { className: "h-8 w-8 text-primary" }),
-    category: "Search",
+    categories: ["Search"],
     state: "not-started",
     enabled: false,
     apiKey: "",
@@ -581,7 +581,7 @@ export const mcpServers: Record<string, ServerConfig> = {
     name: "MongoDB",
     description: "Connect to MongoDB databases",
     icon: React.createElement(ServerIcon, { className: "h-8 w-8 text-primary" }),
-    category: "Database",
+    categories: ["Database"],
     state: "not-started",
     enabled: false,
     connectionString: "",
@@ -677,7 +677,7 @@ export const mcpServers: Record<string, ServerConfig> = {
     name: "Jira",
     description: "Access Jira issues and projects",
     icon: React.createElement(ServerIcon, { className: "h-8 w-8 text-primary" }),
-    category: "Development",
+    categories: ["Development"],
     state: "not-started",
     enabled: false,
     apiKey: "",

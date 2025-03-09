@@ -26,84 +26,13 @@ export function AIToolConnections() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Tabs defaultValue="api-key" className="w-full">
+          <Tabs defaultValue="oauth" className="w-full">
             <TabsList className="grid grid-cols-4 mb-4">
-              <TabsTrigger value="api-key">API Key</TabsTrigger>
               <TabsTrigger value="oauth">OAuth</TabsTrigger>
-              <TabsTrigger value="url">Direct URL</TabsTrigger>
-              <TabsTrigger value="local">Local Dev</TabsTrigger>
+              <TabsTrigger value="api">API</TabsTrigger>
+              <TabsTrigger value="url">URL</TabsTrigger>
+              <TabsTrigger value="local">Local</TabsTrigger>
             </TabsList>
-
-            <TabsContent value="api-key" className="space-y-4">
-              <div className="space-y-2">
-                <h3 className="text-lg font-medium">API Key Integration</h3>
-                <p className="text-sm text-muted-foreground">
-                  Use your MCP Router API key to connect AI tools that support API key authentication.
-                </p>
-              </div>
-
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <label htmlFor="api-key" className="text-sm font-medium">
-                      Your MCP Router API Key
-                    </label>
-                    <Button variant="ghost" size="sm" className="h-7 gap-1">
-                      <RefreshCw className="h-3.5 w-3.5" />
-                      <span className="text-xs">Regenerate</span>
-                    </Button>
-                  </div>
-                  <div className="flex gap-2">
-                    <Input
-                      id="api-key"
-                      value="mcp_xxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-                      readOnly
-                      className="font-mono text-sm"
-                    />
-                    <CopyButton textToCopy="mcp_xxxxxxxxxxxxxxxxxxxxxxxxxxxx" />
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    This key grants access to your MCP Router. Keep it secure and never share it publicly.
-                  </p>
-                </div>
-
-                <div className="rounded-md border p-4 space-y-4">
-                  <h4 className="font-medium">Connection Instructions</h4>
-                  <ol className="space-y-3 text-sm">
-                    <li className="flex gap-2">
-                      <div className="flex-shrink-0 flex h-5 w-5 items-center justify-center rounded-full bg-purple-100 text-purple-600 dark:bg-purple-800/30">
-                        1
-                      </div>
-                      <span>Open your AI tool settings (Cursor, Windsurf, etc.)</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <div className="flex-shrink-0 flex h-5 w-5 items-center justify-center rounded-full bg-purple-100 text-purple-600 dark:bg-purple-800/30">
-                        2
-                      </div>
-                      <span>Navigate to Integrations or Extensions section</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <div className="flex-shrink-0 flex h-5 w-5 items-center justify-center rounded-full bg-purple-100 text-purple-600 dark:bg-purple-800/30">
-                        3
-                      </div>
-                      <span>Find and select "MCP Router" from the list of available integrations</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <div className="flex-shrink-0 flex h-5 w-5 items-center justify-center rounded-full bg-purple-100 text-purple-600 dark:bg-purple-800/30">
-                        4
-                      </div>
-                      <span>Paste your API key when prompted</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <div className="flex-shrink-0 flex h-5 w-5 items-center justify-center rounded-full bg-purple-100 text-purple-600 dark:bg-purple-800/30">
-                        5
-                      </div>
-                      <span>Click Connect or Save to complete the integration</span>
-                    </li>
-                  </ol>
-                </div>
-              </div>
-            </TabsContent>
 
             <TabsContent value="oauth" className="space-y-4">
               <div className="space-y-2">
@@ -197,6 +126,77 @@ export function AIToolConnections() {
                     </p>
                   </CardContent>
                 </Card>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="api" className="space-y-4">
+              <div className="space-y-2">
+                <h3 className="text-lg font-medium">API Key Integration</h3>
+                <p className="text-sm text-muted-foreground">
+                  Use your MCP Router API key to connect AI tools that support API key authentication.
+                </p>
+              </div>
+
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <label htmlFor="api-key" className="text-sm font-medium">
+                      Your MCP Router API Key
+                    </label>
+                    <Button variant="ghost" size="sm" className="h-7 gap-1">
+                      <RefreshCw className="h-3.5 w-3.5" />
+                      <span className="text-xs">Regenerate</span>
+                    </Button>
+                  </div>
+                  <div className="flex gap-2">
+                    <Input
+                      id="api-key"
+                      value="mcp_xxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+                      readOnly
+                      className="font-mono text-sm"
+                    />
+                    <CopyButton textToCopy="mcp_xxxxxxxxxxxxxxxxxxxxxxxxxxxx" />
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    This key grants access to your MCP Router. Keep it secure and never share it publicly.
+                  </p>
+                </div>
+
+                <div className="rounded-md border p-4 space-y-4">
+                  <h4 className="font-medium">Connection Instructions</h4>
+                  <ol className="space-y-3 text-sm">
+                    <li className="flex gap-2">
+                      <div className="flex-shrink-0 flex h-5 w-5 items-center justify-center rounded-full bg-purple-100 text-purple-600 dark:bg-purple-800/30">
+                        1
+                      </div>
+                      <span>Open your AI tool settings (Cursor, Windsurf, etc.)</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <div className="flex-shrink-0 flex h-5 w-5 items-center justify-center rounded-full bg-purple-100 text-purple-600 dark:bg-purple-800/30">
+                        2
+                      </div>
+                      <span>Navigate to Integrations or Extensions section</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <div className="flex-shrink-0 flex h-5 w-5 items-center justify-center rounded-full bg-purple-100 text-purple-600 dark:bg-purple-800/30">
+                        3
+                      </div>
+                      <span>Find and select "MCP Router" from the list of available integrations</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <div className="flex-shrink-0 flex h-5 w-5 items-center justify-center rounded-full bg-purple-100 text-purple-600 dark:bg-purple-800/30">
+                        4
+                      </div>
+                      <span>Paste your API key when prompted</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <div className="flex-shrink-0 flex h-5 w-5 items-center justify-center rounded-full bg-purple-100 text-purple-600 dark:bg-purple-800/30">
+                        5
+                      </div>
+                      <span>Click Connect or Save to complete the integration</span>
+                    </li>
+                  </ol>
+                </div>
               </div>
             </TabsContent>
 

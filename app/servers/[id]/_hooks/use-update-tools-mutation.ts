@@ -2,8 +2,10 @@ import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {createApiClient} from "@/lib/api";
 import {Server, USE_SERVER_QUERY_KEY} from "@/app/servers/[id]/_hooks/use-server-query";
 import { useToast } from "@/components/ui/use-toast";
+import {USE_DASHBOARD_SERVERS_KEY} from "@/app/dashboard/_hooks/use-dashboard-servers-query";
 
 export type UseUpdateToolsMutationParameters = {
+  slug: string;
   tools: {
     id: string;
     status: string;
@@ -12,27 +14,28 @@ export type UseUpdateToolsMutationParameters = {
   }[];
 };
 
-export function useUpdateToolsMutation(slug: string) {
+export function useUpdateToolsMutation() {
   const queryClient = useQueryClient();
   const {toast} = useToast();
   return useMutation({
-    mutationFn: async ({ tools }: UseUpdateToolsMutationParameters) => {
+    mutationFn: async ({ slug, tools }: UseUpdateToolsMutationParameters) => {
       const server = queryClient.getQueryData<Server | null>([USE_SERVER_QUERY_KEY, slug]);
-      if (!server) return;
-      const newServer = {
-        ...server,
-        tools: server.tools.map((tool) => {
-          const newTool = tools.find(({ id }) => id === tool.id);
-          if (!newTool) return tool;
-          return {
-            ...tool,
-            status: newTool.status,
-            customName: newTool.customName,
-            customDescription: newTool.customDescription,
-          };
-        }),
-      };
-      queryClient.setQueryData([USE_SERVER_QUERY_KEY, slug], newServer);
+      if (server) {
+        const newServer = {
+          ...server,
+          tools: server.tools.map((tool) => {
+            const newTool = tools.find(({ id }) => id === tool.id);
+            if (!newTool) return tool;
+            return {
+              ...tool,
+              status: newTool.status,
+              customName: newTool.customName,
+              customDescription: newTool.customDescription,
+            };
+          }),
+        };
+        queryClient.setQueryData([USE_SERVER_QUERY_KEY, slug], newServer);
+      }
 
       const client = createApiClient();
       const response = await client.api.tools["update-tools"].$post({ json: { tools } });
@@ -40,7 +43,10 @@ export function useUpdateToolsMutation(slug: string) {
       if (error) throw new Error(error);
     },
     onSettled: () => {
-      return queryClient.invalidateQueries({ queryKey: [USE_SERVER_QUERY_KEY, slug] })
+      return Promise.all([
+        queryClient.invalidateQueries({ queryKey: [USE_SERVER_QUERY_KEY] }),
+        queryClient.invalidateQueries({ queryKey: [USE_DASHBOARD_SERVERS_KEY] })
+      ])
     },
     onSuccess: () => {
       toast({

@@ -1,13 +1,14 @@
 import { Settings } from "lucide-react"
 import { ServerCard } from "@/components/server-card"
 import type { ServerConfig } from "@/lib/server-config"
+import {DashboardServer} from "@/app/dashboard/_hooks/use-dashboard-servers-query";
 
 interface ServersNeedingConfigurationProps {
-  servers: ServerConfig[]
+  servers: DashboardServer[];
 }
 
 export function ServersNeedingConfiguration({ servers }: ServersNeedingConfigurationProps) {
-  const serversNeedingConfig = servers.filter((server) => server.state === "needs_configuration")
+  const serversNeedingConfig = servers.filter((server) => server.status === "misconfigured")
 
   if (serversNeedingConfig.length === 0) {
     return null
@@ -29,4 +30,3 @@ export function ServersNeedingConfiguration({ servers }: ServersNeedingConfigura
     </div>
   )
 }
-
