@@ -1,6 +1,7 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
+import { Analytics } from "@vercel/analytics/react"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/toaster"
@@ -35,6 +36,7 @@ export default async function RootLayout({
           <Toaster/>
         </ThemeProvider>
       </QueryProvider>
+      <Analytics />
       </body>
     </html>
   )
