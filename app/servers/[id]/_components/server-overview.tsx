@@ -220,7 +220,7 @@ export function ServerOverview(props: ServerOverviewProps) {
                 <Card key={tool.id} className="overflow-hidden">
                   <CardHeader className="p-4">
                     <div className="flex items-center justify-between">
-                      <CardTitle className="text-base">{tool.name}</CardTitle>
+                      <CardTitle className="text-base">{tool.customName || tool.name}</CardTitle>
                       {props.status !== "not-started" && (
                         <Switch
                           id={`tool-${tool.id}`}
@@ -232,7 +232,7 @@ export function ServerOverview(props: ServerOverviewProps) {
                     </div>
                   </CardHeader>
                   <CardContent className="p-4 pt-0">
-                    <p className="text-sm text-muted-foreground">{tool.description}</p>
+                    <p className="text-sm text-muted-foreground">{tool.customDescription || tool.description}</p>
                   </CardContent>
                 </Card>
               ))}

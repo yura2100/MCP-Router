@@ -33,7 +33,7 @@ export function useServerQuery({ slug }: UseServerQueryParameters) {
             id,
             name,
             description,
-            user_tools (status)
+            user_tools (status, custom_name, custom_description)
           )
         `)
         .eq("slug", slug);
@@ -61,6 +61,8 @@ export function useServerQuery({ slug }: UseServerQueryParameters) {
             name: tool.name,
             description: tool.description,
             status: userTool?.status ?? "active",
+            customName: userTool?.custom_name ?? "",
+            customDescription: userTool?.custom_description ?? "",
           }
         }),
       };

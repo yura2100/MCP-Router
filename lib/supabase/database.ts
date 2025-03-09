@@ -190,6 +190,8 @@ export type Database = {
       user_tools: {
         Row: {
           created_at: string
+          custom_description: string
+          custom_name: string
           id: string
           status: string
           tool_id: string
@@ -198,14 +200,18 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          custom_description?: string
+          custom_name?: string
           id?: string
-          status?: string
+          status: string
           tool_id?: string
           updated_at?: string
           user_id?: string
         }
         Update: {
           created_at?: string
+          custom_description?: string
+          custom_name?: string
           id?: string
           status?: string
           tool_id?: string

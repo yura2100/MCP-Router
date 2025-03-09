@@ -63,7 +63,7 @@ export default function ServerPage() {
           </Tabs>
         )}
         {tab === "overview" && <ServerOverview {...server} />}
-        {tab === "tools" && <ServerTools />}
+        {tab === "tools" && <ServerTools slug={server.slug} tools={server.tools} />}
         {tab === "settings" && <ServerSettings />}
 
         {/*{server.state !== "active" && activeTab === "tools" ? (*/}
