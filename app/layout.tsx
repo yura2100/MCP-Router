@@ -2,6 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import { Analytics } from "@vercel/analytics/react"
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/toaster"
@@ -46,16 +47,17 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-      <QueryProvider>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <div className="min-h-screen flex flex-col">
-            <Navbar isAuthenticated={session !== null} />
-            <main className="flex-1">{children}</main>
-          </div>
-          <Toaster/>
-        </ThemeProvider>
-      </QueryProvider>
-      <Analytics />
+        <QueryProvider>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+            <div className="min-h-screen flex flex-col">
+              <Navbar isAuthenticated={session !== null} />
+              <main className="flex-1">{children}</main>
+            </div>
+            <Toaster/>
+          </ThemeProvider>
+        </QueryProvider>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )
