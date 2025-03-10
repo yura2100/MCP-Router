@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
-import {Wrench, ExternalLink} from "lucide-react"
+import {Wrench, ExternalLink, ArrowRight} from "lucide-react"
 import { ServerStatusBadge } from "@/components/server-status-badge"
 import { Switch } from "@/components/ui/switch"
 import {DashboardServer} from "@/app/dashboard/_hooks/use-dashboard-servers-query";
@@ -120,7 +120,10 @@ export function AvailableTools({ servers }: AvailableToolsProps) {
                 <p className="text-sm text-muted-foreground">Start a server to see available tools.</p>
               </div>
               <Button asChild>
-                <Link href="/servers">Browse Servers</Link>
+                <Link href="/servers">
+                  Browse Integrations
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
               </Button>
             </div>
           </CardContent>

@@ -38,9 +38,9 @@ export default function ServersPage() {
     <div className="container py-10">
       <div className="flex flex-col space-y-6">
         <div className="flex flex-col space-y-2">
-          <h1 className="text-3xl font-bold tracking-tight">MCP Servers</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Integrations</h1>
           <p className="text-muted-foreground">
-            Browse and configure Model Context Protocol servers to connect your AI tools to external services.
+            Browse and configure Model Context Protocol servers to connect your AI tools to external services
           </p>
         </div>
 
@@ -49,7 +49,7 @@ export default function ServersPage() {
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               type="search"
-              placeholder="Search servers..."
+              placeholder="Search integrations..."
               className="pl-8"
               value={search}
               onChange={(e) => setSearch(e.target.value)}

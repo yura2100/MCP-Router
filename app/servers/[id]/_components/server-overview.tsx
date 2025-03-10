@@ -168,7 +168,7 @@ export function ServerOverview(props: ServerOverviewProps) {
       <Card>
         <CardHeader>
           <div className="flex justify-between items-center">
-            <CardTitle>Server Information</CardTitle>
+            <CardTitle>Overview</CardTitle>
             {renderStatusControl()}
           </div>
           <CardDescription>General information about the {props.name} MCP server</CardDescription>
