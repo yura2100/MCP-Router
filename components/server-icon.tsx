@@ -3,6 +3,7 @@ import aws from "@/public/icons/aws.svg";
 import github from "@/public/icons/github.svg";
 import jira from "@/public/icons/jira.svg";
 import notion from "@/public/icons/notion.svg";
+import postgres from "@/public/icons/postgres.svg";
 import slack from "@/public/icons/slack.svg";
 
 const icons = {
@@ -10,6 +11,7 @@ const icons = {
   github,
   jira,
   notion,
+  postgres,
   slack,
 };
 
