@@ -1,6 +1,7 @@
 import Image from "next/image";
 import aws from "@/public/icons/aws.svg";
 import github from "@/public/icons/github.svg";
+import gmail from "@/public/icons/gmail.svg";
 import jira from "@/public/icons/jira.svg";
 import notion from "@/public/icons/notion.svg";
 import postgres from "@/public/icons/postgres.svg";
@@ -9,6 +10,7 @@ import slack from "@/public/icons/slack.svg";
 const icons = {
   aws,
   github,
+  gmail,
   jira,
   notion,
   postgres,
