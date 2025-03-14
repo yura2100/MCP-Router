@@ -8,8 +8,8 @@ import {DashboardServer} from "@/app/dashboard/_hooks/use-dashboard-servers-quer
 import {useRestartServerMutation} from "@/app/servers/[id]/_hooks/use-restart-server-mutation";
 import {usePauseServerMutation} from "@/app/servers/[id]/_hooks/use-pause-server-mutation";
 import {useToggleToolMutation} from "@/app/servers/[id]/_hooks/use-toggle-tool-mutation";
-import {cn} from "@/lib/utils";
 import {ServerIcon} from "@/components/server-icon";
+import {ServerInlineStatus} from "@/components/server-inline-status";
 
 interface AvailableToolsProps {
   servers: DashboardServer[]
@@ -29,8 +29,8 @@ export function AvailableTools({ servers }: AvailableToolsProps) {
       </div>
       <p className="text-muted-foreground">All tools from your servers</p>
 
-      {servers.length > 0 ? (
-        servers.map((server) => (
+      {servers.filter(({ status }) => status !== "misconfigured").length > 0 ? (
+        servers.filter(({ status }) => status !== "misconfigured").map((server) => (
           <Card key={server.id} className="mb-6">
             <CardHeader className="pb-2">
               <div className="flex items-center justify-between">
@@ -39,18 +39,13 @@ export function AvailableTools({ servers }: AvailableToolsProps) {
                   <div>
                     <CardTitle className="text-xl flex items-center">
                       {server.name}
-                      <ServerStatusBadge state={server.status} className="ml-2" />
+                      <ServerStatusBadge state={server.status} className="hidden sm:flex ml-2" />
                     </CardTitle>
                     <CardDescription>{server.maintainer}</CardDescription>
                   </div>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <div className="relative hidden sm:flex size-2.5">
-                    {server.status === "active" && (
-                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"/>)}
-                    <span className={cn("relative inline-flex size-2.5 rounded-full", server.status === "active" ? "bg-green-500" : "bg-amber-500")} />
-                  </div>
-                  <span className="hidden sm:flex text-sm text-muted-foreground">{server.status === "paused" ? "Paused" : "Active"}</span>
+                  <ServerInlineStatus status={server.status}/>
                   <Switch
                     checked={server.status === "active"}
                     disabled={isPending}

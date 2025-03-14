@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { useParams, useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -27,7 +27,7 @@ export function ServerSettings() {
 
   if (
     !initialServerData ||
-    (initialServerData.state !== "active" && initialServerData.state !== "needs_configuration")
+    (initialServerData.state !== "active" && initialServerData.state !== "misconfigured")
   ) {
     return null
   }
@@ -62,8 +62,8 @@ export function ServerSettings() {
     // Check configuration status
     checkConfiguration(server)
 
-    // Update server state if it's now configured and was in needs_configuration state
-    if (isConfigured && server.state === "needs_configuration") {
+    // Update server state if it's now configured and was in misconfigured state
+    if (isConfigured && server.state === "misconfigured") {
       const updatedServer = {
         ...server,
         state: "active" as ServerState,
@@ -314,7 +314,7 @@ export function ServerSettings() {
         <div className="flex justify-between items-center">
           <CardTitle>Server Settings</CardTitle>
           <div className="flex space-x-2">
-            {server.state === "needs_configuration" && isConfigured && (
+            {server.state === "misconfigured" && isConfigured && (
               <Button variant="default" size="sm" onClick={activateServer} className="flex items-center">
                 <Play className="h-4 w-4 mr-2" />
                 Activate Server
@@ -329,7 +329,7 @@ export function ServerSettings() {
         <CardDescription>Configure settings for your {server.name} MCP server</CardDescription>
       </CardHeader>
       <CardContent className="space-y-8">
-        {server.state === "needs_configuration" && (
+        {server.state === "misconfigured" && (
           <Alert className="bg-blue-50 dark:bg-blue-950/30 border-blue-200 dark:border-blue-800">
             <div className="flex items-center space-x-2">
               <div className="h-2 w-2 rounded-full bg-blue-500"></div>

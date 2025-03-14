@@ -63,7 +63,7 @@ export default function ServerPage() {
             </TabsList>
           </Tabs>
         )}
-        {tab === "overview" && <ServerOverview {...server} />}
+        {tab === "overview" && <ServerOverview server={server} setTab={setTab} />}
         {tab === "tools" && <ServerTools slug={server.slug} tools={server.tools} />}
         {tab === "settings" && <ServerSettings />}
 
@@ -73,12 +73,12 @@ export default function ServerPage() {
         {/*    <AlertDescription>*/}
         {/*      {server.state === "not-started"*/}
         {/*        ? "This server has not been started. Please start the server from the General Info page to access tools."*/}
-        {/*        : server.state === "needs_configuration"*/}
+        {/*        : server.state === "misconfigured"*/}
         {/*          ? "This server needs configuration. Please configure the server from the Settings page before accessing tools."*/}
         {/*          : "This server is currently paused. Please resume the server from the General Info page to access tools."}*/}
         {/*    </AlertDescription>*/}
         {/*  </Alert>*/}
-        {/*) : server.state !== "active" && server.state !== "needs_configuration" && activeTab === "settings" ? (*/}
+        {/*) : server.state !== "active" && server.state !== "misconfigured" && activeTab === "settings" ? (*/}
         {/*  <Alert variant="destructive">*/}
         {/*    <AlertTriangle className="h-4 w-4" />*/}
         {/*    <AlertDescription>*/}

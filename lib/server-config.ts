@@ -1,7 +1,7 @@
 import { ServerIcon } from "lucide-react"
 import React from "react"
 
-export type ServerState = "not-started" | "needs_configuration" | "active" | "paused"
+export type ServerState = "not-started" | "misconfigured" | "active" | "paused"
 
 export interface ToolParameter {
   name: string
@@ -53,7 +53,7 @@ export const mcpServers: Record<string, ServerConfig> = {
     description: "Connect to PostgreSQL databases including Supabase",
     icon: React.createElement(ServerIcon, { className: "h-8 w-8 text-primary" }),
     categories: ["Database"],
-    state: "needs_configuration",
+    state: "misconfigured",
     enabled: false,
     connectionString: "",
     schema: "",

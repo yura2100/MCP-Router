@@ -20,7 +20,7 @@ export function ServersNeedingConfiguration({ servers }: ServersNeedingConfigura
         <Settings className="h-5 w-5 text-blue-600" />
         <h2 className="text-2xl font-bold tracking-tight">Servers Needing Configuration</h2>
       </div>
-      <p className="text-muted-foreground">These servers need to be configured before they can be activated</p>
+      <p className="text-muted-foreground">These servers need to be configured before they can be used</p>
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {serversNeedingConfig.map((server) => (
