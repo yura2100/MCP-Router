@@ -9,32 +9,16 @@ import { Toaster } from "@/components/ui/toaster"
 import { Navbar } from "@/components/navbar"
 import {getServerSession} from "@/lib/supabase/auth/get-server-session";
 import {QueryProvider} from "@/lib/query/query-provider";
-import ogImage from './opengraph-image.jpg'
 import './globals.css'
 
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
+  applicationName: "MCP Router",
   title: "MCP Router | Effortless AI Integration",
-  description: "Streamline AI workflows with MCP Router—no technical setup required. We manage servers, provide seamless configuration, and offer centralized control for all your AI integrations.",
-  metadataBase: new URL(process.env.NEXT_PUBLIC_URL!),
+  description: "Streamline AI workflows with MCP Router — no technical setup required. We manage servers, provide seamless configuration, and offer centralized control for all your AI integrations.",
   openGraph: {
-    images: [
-      {
-        url: ogImage.src,
-        width: ogImage.width,
-        height: ogImage.height
-      },
-    ],
-  },
-  twitter: {
-    images: [
-      {
-        url: ogImage.src,
-        width: ogImage.width,
-        height: ogImage.height
-      },
-    ]
+    siteName: "MCP Router",
   },
 }
 
