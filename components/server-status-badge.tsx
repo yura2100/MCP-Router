@@ -27,7 +27,7 @@ export function ServerStatusBadge({ state, className }: ServerStatusBadgeProps) 
       return (
         <Badge variant="outline" className={`bg-blue-500/10 text-blue-600 hover:bg-blue-500/10 ${className}`}>
           <Settings className="h-3 w-3 mr-1" />
-          Needs Configuration
+          Misconfigured
         </Badge>
       )
     case "not-started":
