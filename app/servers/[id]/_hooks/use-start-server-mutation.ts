@@ -3,7 +3,7 @@ import {createApiClient} from "@/lib/api";
 import {Server, USE_SERVER_QUERY_KEY} from "@/app/servers/[id]/_hooks/use-server-query";
 import {USE_SERVERS_QUERY_KEY} from "@/app/servers/_hooks/use-servers-query";
 import {useToast} from "@/components/ui/use-toast";
-import {USE_DASHBOARD_SERVERS_KEY} from "@/app/dashboard/_hooks/use-dashboard-servers-query";
+import {USE_DASHBOARD_SERVERS_QUERY_KEY} from "@/app/dashboard/_hooks/use-dashboard-servers-query";
 
 export type UseStartServerMutationParameters = {
   serverId: string;
@@ -30,7 +30,7 @@ export function useStartServerMutation() {
       return Promise.all([
         queryClient.invalidateQueries({ queryKey: [USE_SERVER_QUERY_KEY] }),
         queryClient.invalidateQueries({ queryKey: [USE_SERVERS_QUERY_KEY] }),
-        queryClient.invalidateQueries({ queryKey: [USE_DASHBOARD_SERVERS_KEY] }),
+        queryClient.invalidateQueries({ queryKey: [USE_DASHBOARD_SERVERS_QUERY_KEY] }),
       ])
     },
     onSuccess: () => {

@@ -65,7 +65,7 @@ export default function ServerPage() {
         )}
         {tab === "overview" && <ServerOverview server={server} setTab={setTab} />}
         {tab === "tools" && <ServerTools slug={server.slug} tools={server.tools} />}
-        {tab === "settings" && <ServerSettings />}
+        {tab === "settings" && <ServerSettings server={server} setTab={setTab} />}
 
         {/*{server.state !== "active" && activeTab === "tools" ? (*/}
         {/*  <Alert variant="destructive">*/}

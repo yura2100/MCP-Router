@@ -1,11 +1,11 @@
 import {useQuery} from "@tanstack/react-query";
 import {createBrowserClient} from "@/lib/supabase/clients/browser";
 
-export const USE_DASHBOARD_SERVERS_KEY = "useDashboardServers"
+export const USE_DASHBOARD_SERVERS_QUERY_KEY = "useDashboardServersQuery"
 
-export function useDashboardServers() {
+export function useDashboardServersQuery() {
   return useQuery({
-    queryKey: [USE_DASHBOARD_SERVERS_KEY],
+    queryKey: [USE_DASHBOARD_SERVERS_QUERY_KEY],
     queryFn: async () => {
       const supabase = createBrowserClient();
       const { data } = await supabase
@@ -57,4 +57,4 @@ export function useDashboardServers() {
   });
 }
 
-export type DashboardServer = ReturnType<typeof useDashboardServers>["data"][number];
+export type DashboardServer = ReturnType<typeof useDashboardServersQuery>["data"][number];

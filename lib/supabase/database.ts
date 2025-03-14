@@ -71,6 +71,7 @@ export type Database = {
       }
       servers: {
         Row: {
+          config: Json
           created_at: string
           description: string
           documentation: string
@@ -85,6 +86,7 @@ export type Database = {
           version: string
         }
         Insert: {
+          config: Json
           created_at?: string
           description: string
           documentation: string
@@ -99,6 +101,7 @@ export type Database = {
           version: string
         }
         Update: {
+          config?: Json
           created_at?: string
           description?: string
           documentation?: string
@@ -154,6 +157,7 @@ export type Database = {
       }
       user_servers: {
         Row: {
+          config: Json | null
           created_at: string
           id: string
           is_starred: boolean
@@ -163,6 +167,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          config?: Json | null
           created_at?: string
           id?: string
           is_starred?: boolean
@@ -172,6 +177,7 @@ export type Database = {
           user_id: string
         }
         Update: {
+          config?: Json | null
           created_at?: string
           id?: string
           is_starred?: boolean

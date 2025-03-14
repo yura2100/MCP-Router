@@ -2,7 +2,7 @@ import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {createApiClient} from "@/lib/api";
 import {Server, USE_SERVER_QUERY_KEY} from "@/app/servers/[id]/_hooks/use-server-query";
 import { useToast } from "@/components/ui/use-toast";
-import {DashboardServer, USE_DASHBOARD_SERVERS_KEY} from "@/app/dashboard/_hooks/use-dashboard-servers-query";
+import {DashboardServer, USE_DASHBOARD_SERVERS_QUERY_KEY} from "@/app/dashboard/_hooks/use-dashboard-servers-query";
 
 export type UseToggleToolMutationParameters = {
   toolId: string;
@@ -29,7 +29,7 @@ export function useToggleToolMutation() {
         queryClient.setQueryData([USE_SERVER_QUERY_KEY, slug], newServer);
       }
 
-      const dashboardServers = queryClient.getQueryData<DashboardServer[]>([USE_DASHBOARD_SERVERS_KEY]);
+      const dashboardServers = queryClient.getQueryData<DashboardServer[]>([USE_DASHBOARD_SERVERS_QUERY_KEY]);
       if (dashboardServers) {
         const newDashboardServers = dashboardServers.map((server) => {
           const tool = server.tools.find(({ id }) => id === toolId);
@@ -45,7 +45,7 @@ export function useToggleToolMutation() {
             }),
           };
         });
-        queryClient.setQueryData([USE_DASHBOARD_SERVERS_KEY], newDashboardServers);
+        queryClient.setQueryData([USE_DASHBOARD_SERVERS_QUERY_KEY], newDashboardServers);
       }
 
       const client = createApiClient();
@@ -56,7 +56,7 @@ export function useToggleToolMutation() {
     onSettled: () => {
       return Promise.all([
         queryClient.invalidateQueries({ queryKey: [USE_SERVER_QUERY_KEY] }),
-        queryClient.invalidateQueries({ queryKey: [USE_DASHBOARD_SERVERS_KEY] }),
+        queryClient.invalidateQueries({ queryKey: [USE_DASHBOARD_SERVERS_QUERY_KEY] }),
       ])
     },
     onSuccess: () => {

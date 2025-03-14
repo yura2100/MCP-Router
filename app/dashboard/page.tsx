@@ -5,10 +5,10 @@ import { StatsOverview } from "./_components/stats-overview"
 import { ServersNeedingConfiguration } from "./_components/servers-needing-configuration"
 // import { AIToolConnections } from "./_components/ai-tool-connections"
 import { AvailableTools } from "./_components/available-tools"
-import {useDashboardServers} from "@/app/dashboard/_hooks/use-dashboard-servers-query";
+import {useDashboardServersQuery} from "@/app/dashboard/_hooks/use-dashboard-servers-query";
 
 export default function DashboardPage() {
-  const { data: servers } = useDashboardServers();
+  const { data: servers } = useDashboardServersQuery();
   const stats = {
     total: servers.length,
     active: servers.filter((server) => server.status === "active").length,

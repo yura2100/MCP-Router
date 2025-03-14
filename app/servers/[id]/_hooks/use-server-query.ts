@@ -25,10 +25,11 @@ export function useServerQuery({ slug }: UseServerQueryParameters) {
           stars,
           version,
           maintainer,
+          config,
           server_categories (
             categories (name)
           ),
-          user_servers (status, is_starred),
+          user_servers (status, is_starred, config),
           tools (
             id,
             name,
@@ -52,6 +53,8 @@ export function useServerQuery({ slug }: UseServerQueryParameters) {
         stars: server.stars,
         version: server.version,
         isStarred: userServer?.is_starred ?? false,
+        config: server.config as Record<string, any>,
+        userConfig: (userServer?.config ?? {}) as Record<string, any>,
         status: userServer?.status ?? "not-started",
         categories: server.server_categories.map((category) => category.categories.name),
         tools: server.tools.map((tool) => {
