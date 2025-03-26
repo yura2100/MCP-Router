@@ -3,7 +3,7 @@
 import { DashboardHeader } from "./_components/dashboard-header"
 import { StatsOverview } from "./_components/stats-overview"
 import { ServersNeedingConfiguration } from "./_components/servers-needing-configuration"
-// import { AIToolConnections } from "./_components/ai-tool-connections"
+import { AIToolConnections } from "./_components/ai-tool-connections"
 import { AvailableTools } from "./_components/available-tools"
 import {useDashboardServersQuery} from "@/app/dashboard/_hooks/use-dashboard-servers-query";
 
@@ -22,7 +22,7 @@ export default function DashboardPage() {
         <DashboardHeader />
         <StatsOverview stats={stats} />
         <ServersNeedingConfiguration servers={servers} />
-        {/*<AIToolConnections />*/}
+        <AIToolConnections />
         <AvailableTools servers={servers} />
       </div>
     </div>
