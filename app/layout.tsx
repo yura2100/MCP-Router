@@ -1,6 +1,6 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
+import { Geist } from "next/font/google"
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css"
@@ -11,7 +11,7 @@ import {getServerSession} from "@/lib/supabase/auth/get-server-session";
 import {QueryProvider} from "@/lib/query/query-provider";
 import './globals.css'
 
-const inter = Inter({ subsets: ["latin"] })
+const geist = Geist({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   applicationName: "MCP Router",
@@ -30,7 +30,7 @@ export default async function RootLayout({
   const session = await getServerSession();
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
+      <body className={geist.className}>
         <QueryProvider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
             <div className="min-h-screen flex flex-col">
