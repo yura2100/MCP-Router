@@ -6,12 +6,15 @@ import { createSsrClient } from '@/lib/supabase/clients/ssr'
 
 export type Provider = "google";
 
-const redirectTo = new URL("/api/auth/callback", process.env.NEXT_PUBLIC_URL).href;
+const callbackUrl = new URL("/api/auth/callback", process.env.NEXT_PUBLIC_URL);
 
-export async function signInOAuth(provider: Provider) {
+export async function signInOAuth(provider: Provider, next: string) {
   const supabase = await createSsrClient()
+  const redirectTo = new URL(callbackUrl);
+  redirectTo.searchParams.set('next', next);
   const { data, error } = await supabase.auth.signInWithOAuth({
-    provider, options: { redirectTo },
+    provider,
+    options: { redirectTo: redirectTo.toString() },
   });
   if (error) {
     // TODO: Add proper error handling

@@ -6,10 +6,13 @@ import { Layers } from "lucide-react"
 import { useSignInOauthMutation } from "@/app/auth/_hooks/use-sign-in-oauth-mutation";
 import Link from "next/link";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 import GoogleIcon from "@/public/google.svg";
 
 export default function AuthPage() {
   const { mutate, isPending } = useSignInOauthMutation();
+  const searchParams = useSearchParams();
+  const next = searchParams.get("next") || "/dashboard";
 
   return (
     <div className="container flex h-screen w-screen flex-col items-center justify-center">
@@ -28,7 +31,7 @@ export default function AuthPage() {
           </CardHeader>
           <CardContent className="flex justify-center">
             <Button
-              onClick={() => mutate({ provider: "google" })}
+              onClick={() => mutate({ provider: "google", next })}
               className="w-full flex items-center justify-center"
               disabled={isPending}
               variant="outline"

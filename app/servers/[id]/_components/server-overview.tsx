@@ -13,6 +13,7 @@ import {useRestartServerMutation} from "@/app/servers/[id]/_hooks/use-restart-se
 import {useToggleStarMutation} from "@/app/servers/[id]/_hooks/use-toggle-star-mutation";
 import {useToggleToolMutation} from "@/app/servers/[id]/_hooks/use-toggle-tool-mutation";
 import {ServerInlineStatus} from "@/components/server-inline-status";
+import Link from "next/link";
 
 type ServerOverviewProps = {
   server: Server;
@@ -29,7 +30,16 @@ export function ServerOverview({ server, setTab }: ServerOverviewProps) {
   const isPending = isStartServerPending || isRestartServerPending || isPauseServerPending || isToggleToolPending;
 
   const renderStatusControl = () => {
-    if (!isAuthenticated) return null;
+    if (!isAuthenticated) {
+      return (
+        <Button variant="default" size="sm" className="flex items-center" asChild>
+          <Link href={`/auth?next=/servers/${server.slug}`}>
+            <Play className="h-4 w-4 mr-2" />
+            Start Server
+          </Link>
+        </Button>
+      );
+    }
 
     if (server.status === "not-started") {
       return (
@@ -73,6 +83,17 @@ export function ServerOverview({ server, setTab }: ServerOverviewProps) {
 
   // Replace the getStatusActionButton function with this version that includes colored indicators
   const getStatusActionButton = () => {
+    if (!isAuthenticated) {
+      return (
+        <Button variant="default" size="sm" className="w-full" asChild>
+          <Link href={`/auth?next=/servers/${server.slug}`}>
+            <Play className="h-4 w-4 mr-2" />
+            Start Server
+          </Link>
+        </Button>
+      );
+    }
+
     switch (server.status) {
       case "not-started":
         return (
@@ -242,7 +263,7 @@ export function ServerOverview({ server, setTab }: ServerOverviewProps) {
         </CardFooter>
       </Card>
 
-      {isAuthenticated && server.status !== "active" && (
+      {server.status !== "active" && (
         <Card className="border-dashed border-muted-foreground/50">
           <CardContent className="pt-6">
             <div className="flex flex-col items-center justify-center text-center space-y-3 py-6">
