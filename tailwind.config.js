@@ -1,4 +1,4 @@
-/** @type {import('tailwindcss').Config} */
+/** @type {import("tailwindcss").Config} */
 module.exports = {
   darkMode: ["class"],
   content: [
@@ -77,16 +77,33 @@ module.exports = {
         },
         gradient: {
           to: { backgroundPosition: "var(--bg-size, 300%) 0" }
-        }
+        },
+        aurora: {
+          from: {
+            backgroundPosition: "50% 50%, 50% 50%",
+          },
+          to: {
+            backgroundPosition: "350% 50%, 350% 50%",
+          },
+        },
+        orbit: {
+          "0%": {
+            transform: "rotate(calc(var(--angle) * 1deg)) translateY(calc(var(--radius) * 1px)) rotate(calc(var(--angle) * -1deg))"
+          },
+          "100%": {
+            transform: "rotate(calc(var(--angle) * 1deg + 360deg)) translateY(calc(var(--radius) * 1px)) rotate(calc((var(--angle) * -1deg) - 360deg))"
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         rainbow: "rainbow var(--speed, 2s) infinite linear",
         gradient: "gradient 8s linear infinite",
+        aurora: "aurora 60s linear infinite",
+        orbit: "orbit calc(var(--duration)*1s) linear infinite",
       },
     },
   },
   plugins: [require("tailwindcss-animate")],
 }
-

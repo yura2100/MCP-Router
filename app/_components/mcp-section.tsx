@@ -6,7 +6,7 @@ export function McpSection() {
     <section className="container -mb-[30vh] lg:mb-0 lg:grid lg:grid-cols-2">
       <div>
         <TextReveal>
-          Model Context Protocol (MCP) is a new standard for connecting AI  to the systems where data lives, including content repositories, business tools, and development environments.
+          Model Context Protocol (MCP) is a standard for connecting AI to the systems where data lives, including content repositories, business tools, and development environments.
         </TextReveal>
       </div>
       <div className="relative -top-[30vh] lg:top-0">
@@ -36,10 +36,6 @@ export function McpSection() {
 
             <AnimatedSpan delay={4000} className="text-green-500">
               <span>✔ Standardized</span>
-            </AnimatedSpan>
-
-            <AnimatedSpan delay={4500} className="text-blue-500">
-              <span>• Vibe Coding...</span>
             </AnimatedSpan>
           </Terminal>
         </div>

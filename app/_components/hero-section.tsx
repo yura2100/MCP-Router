@@ -6,15 +6,12 @@ import { AnimatedGradientText } from "@/components/magicui/animated-gradient-tex
 
 export function HeroSection() {
   return (
-    <section className="w-full h-[calc(100vh-3.5rem)] py-12 md:py-24 lg:py-32 xl:py-48 relative overflow-hidden border-b">
-      <div className="absolute inset-0 -z-10 h-full w-full">
-        <div className="absolute h-full w-full bg-[radial-gradient(#d1d5db_1px,transparent_1px)] [background-size:20px_20px] dark:bg-[radial-gradient(#374151_1px,transparent_1px)]"></div>
-      </div>
+    <section className="w-full h-[calc(100vh-3.5rem)] py-12 md:py-24 lg:py-32 xl:py-48 relative overflow-hidden">
       <div className="h-full container px-4 md:px-6 flex items-center">
         <div className="max-w-[800px] mx-auto">
           <div className="flex flex-col justify-center space-y-4">
             <div className="space-y-2">
-              <h1 className="text-5xl font-bold md:text-8xl text-center">
+              <h1 className="text-5xl font-bold tracking-tight md:text-8xl text-center">
                 <WordRotate className="stop-flickering" words={["Easy", "Effortless", "Smart", "Scalable", "Powerful", "Instant", "Reliable"]}/>
                 <AnimatedGradientText>AI Integrations</AnimatedGradientText>
               </h1>
