@@ -20,7 +20,7 @@ const features = [
     href: "/servers",
     cta: "Browse Integrations",
     background: (
-      <div className="absolute flex h-[16rem] w-full flex-col items-center justify-center overflow-hidden">
+      <div className="absolute top-8 lg:top-4 flex h-[16rem] w-full flex-col items-center justify-center overflow-hidden">
         <OrbitingCircles iconSize={44} radius={100} duration={60}>
           <AWS className="size-6" />
           <Notion className="size-6" />

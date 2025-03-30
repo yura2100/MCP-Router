@@ -15,7 +15,7 @@ const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   applicationName: "MCP Router",
-  title: "MCP Router | Effortless AI Integration",
+  title: "MCP Router | Effortless AI Integrations",
   description: "Streamline AI workflows with MCP Router — no technical setup required. We manage servers, provide seamless configuration, and offer centralized control for all your AI integrations.",
   openGraph: {
     siteName: "MCP Router",
