@@ -36,13 +36,14 @@ export async function updateSession(request: NextRequest) {
   if (
     !user &&
     request.nextUrl.pathname !== "/" &&
-    request.nextUrl.pathname !== "/auth" &&
+    !request.nextUrl.pathname.includes("/auth") &&
     !request.nextUrl.pathname.includes("/servers") &&
     !request.nextUrl.pathname.includes("/legal")
   ) {
     // no user, potentially respond by redirecting the user to the login page
     const url = request.nextUrl.clone()
-    url.pathname = '/'
+    url.pathname = "/auth"
+    url.searchParams.set("next", request.nextUrl.pathname)
     return NextResponse.redirect(url)
   }
 
