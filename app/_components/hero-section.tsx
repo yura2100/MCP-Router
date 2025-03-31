@@ -15,9 +15,9 @@ export function HeroSection() {
                 <WordRotate className="stop-flickering" words={["Easy", "Effortless", "Smart", "Scalable", "Powerful", "Instant", "Reliable"]}/>
                 <AnimatedGradientText>AI Integrations</AnimatedGradientText>
               </h1>
-              <p className="text-muted-foreground md:text-xl text-center">
+              <h2 className="text-muted-foreground md:text-xl text-center">
                 Connect AI to your workflow — no coding, no complexity, just seamless automation with MCP
-              </p>
+              </h2>
             </div>
             <div className="flex justify-center">
               <Button asChild size="lg" variant="rainbow" className="group stop-flickering">
