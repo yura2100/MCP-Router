@@ -12,11 +12,11 @@ export function HeroSection() {
           <div className="flex flex-col justify-center space-y-4">
             <div className="space-y-2">
               <h1 className="text-5xl font-bold tracking-tight md:text-8xl text-center">
-                <WordRotate className="stop-flickering" words={["Easy", "Effortless", "Smart", "Scalable", "Powerful", "Instant", "Reliable"]}/>
-                <AnimatedGradientText>AI Integrations</AnimatedGradientText>
+                <WordRotate className="stop-flickering" words={["Easy", "Smart", "Scalable", "Powerful", "Secure", "Instant", "Reliable"]}/>
+                <AnimatedGradientText>MCP Servers</AnimatedGradientText>
               </h1>
               <h2 className="text-muted-foreground md:text-xl text-center">
-                Connect AI to your workflow — no coding, no complexity, just seamless automation with MCP
+                Connect AI to your data — no coding, no complexity, just seamless automation with MCP Router
               </h2>
             </div>
             <div className="flex justify-center">
