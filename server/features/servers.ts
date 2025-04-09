@@ -12,7 +12,7 @@ export const serversRouter = new Hono()
     const supabase = createServerClient();
     const selectResult = await supabase
       .from("servers")
-      .select("config, tools (id)")
+      .select("slug, config, tools (id)")
       .eq("id", serverId);
     if (selectResult.error) {
       return ctx.json({ data: null, error: "Failed to start star" }, 500);
@@ -21,9 +21,20 @@ export const serversRouter = new Hono()
     if (!server) {
       return ctx.json({ data: null, error: "Failed to start star" }, 500);
     }
+
     const schema = JSONSchemaToZod.convert((server.config as any).connection.schema);
     const { success: isConfigured, data, error } = await schema.safeParseAsync({});
-    console.log({ schema, isConfigured, data, error });
+
+    const token = btoa(`${process.env.DEPLOYER_USERNAME}:${process.env.DEPLOYER_PASSWORD}`);
+    const createResponse = await fetch(`${process.env.DEPLOYER_URL}/create`, {
+      method: "POST",
+      headers: { "Authorization": `Basic ${token}` },
+      body: JSON.stringify({ slug: server.slug, workspaceId: userId }),
+    });
+    if (!createResponse.ok) {
+      return ctx.json({ data: null, error: "Failed to start server" }, 500);
+    }
+
     const insertUserServerResult = await supabase
       .from("user_servers")
       .insert({
@@ -93,6 +104,7 @@ export const serversRouter = new Hono()
       .select(`
         is_starred,
         servers (
+          slug,
           tools (id)
         )
       `)
@@ -105,6 +117,17 @@ export const serversRouter = new Hono()
     if (!userServer) {
       return ctx.json({ data: null, error: "Failed to stop server" }, 500);
     }
+
+    const token = btoa(`${process.env.DEPLOYER_USERNAME}:${process.env.DEPLOYER_PASSWORD}`);
+    const deleteResponse = await fetch(`${process.env.DEPLOYER_URL}/delete`, {
+      method: "POST",
+      headers: { "Authorization": `Basic ${token}` },
+      body: JSON.stringify({ slug: userServer.servers.slug, workspaceId: userId }),
+    });
+    if (!deleteResponse.ok) {
+      return ctx.json({ data: null, error: "Failed to stop server" }, 500);
+    }
+
     const tooldIds = userServer.servers.tools.map((tool) => tool.id);
     const deleteUserToolsResult = await supabase
       .from("user_tools")
@@ -150,7 +173,7 @@ export const serversRouter = new Hono()
     const supabase = createServerClient();
     const selectResult = await supabase
       .from("user_servers")
-      .select("servers (config)")
+      .select("servers (slug, config)")
       .eq("user_id", userId)
       .eq("server_id", serverId);
     if (selectResult.error) {
@@ -160,8 +183,20 @@ export const serversRouter = new Hono()
     if (!userServer) {
       return ctx.json({ data: null, error: "Failed to update server" }, 500);
     }
+
     const schema = JSONSchemaToZod.convert((userServer.servers.config as any).connection.schema);
     const { success: isConfigured } = await schema.safeParseAsync(config.connection);
+
+    const token = btoa(`${process.env.DEPLOYER_USERNAME}:${process.env.DEPLOYER_PASSWORD}`);
+    const updateSecretsResponse = await fetch(`${process.env.DEPLOYER_URL}/update-secrets`, {
+      method: "POST",
+      headers: { "Authorization": `Basic ${token}` },
+      body: JSON.stringify({ slug: userServer.servers.slug, workspaceId: userId }),
+    });
+    if (!updateSecretsResponse.ok) {
+      return ctx.json({ data: null, error: "Failed to update server" }, 500);
+    }
+
     const updateResult = await supabase
       .from("user_servers")
       .update({
