@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { ModeToggle } from "@/components/mode-toggle"
 import {Layers, Settings, LogOut, LayoutDashboard, X, Menu} from "lucide-react"
 import {useSignOutMutation} from "@/app/auth/_hooks/use-sign-out-mutation";
+import {WorkspaceSwitcher} from "@/components/worspace-switcher";
 
 type NavbarProps = {
   isAuthenticated: boolean;
@@ -46,9 +47,16 @@ export function Navbar({ isAuthenticated }: NavbarProps) {
           <div className="mr-4 flex">
             <Link href="/" className="flex items-center space-x-2">
               <Layers className="h-6 w-6" />
-              <span className="font-bold">MCP Router</span>
+              {!isAuthenticated && <span className="font-bold">MCP Router</span>}
             </Link>
           </div>
+
+          {/* Workspace switcher - only show when authenticated */}
+          {isAuthenticated && (
+            <div className="hidden md:flex mr-auto">
+              <WorkspaceSwitcher />
+            </div>
+          )}
 
           {/* Mobile menu button */}
           <div className="flex md:hidden ml-auto">
@@ -106,6 +114,13 @@ export function Navbar({ isAuthenticated }: NavbarProps) {
         {mobileMenuOpen && (
           <div className="md:hidden border-t">
             <div className="container py-4 flex flex-col space-y-3">
+              {/* Mobile workspace switcher */}
+              {isAuthenticated && (
+                <div className="mb-2">
+                  <WorkspaceSwitcher />
+                </div>
+              )}
+
               <nav className="flex flex-col space-y-2">
                 {/* Public nav items - visible to all users */}
                 {publicNavItems.map((item) => (
