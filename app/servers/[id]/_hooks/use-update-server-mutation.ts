@@ -19,8 +19,12 @@ export function useUpdateServerMutation() {
   const [workspaceId] = useCurrentWorkspaceStore();
   return useMutation({
     mutationFn: async ({ serverId, config }: UseUpdateServerMutationParameters) => {
+      if (!workspaceId) {
+        throw new Error("Workspace ID is not defined");
+      }
+
       const client = createApiClient();
-      const response = await client.api.servers["update-server"].$post({ json: { serverId, config } });
+      const response = await client.api.servers["update-server"].$post({ json: { serverId, workspaceId, config } });
       const { error } = await response.json();
       if (error) throw new Error(error);
     },

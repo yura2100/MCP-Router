@@ -21,6 +21,10 @@ export function useUpdateToolsMutation() {
   const [workspaceId] = useCurrentWorkspaceStore();
   return useMutation({
     mutationFn: async ({ slug, tools }: UseUpdateToolsMutationParameters) => {
+      if (!workspaceId) {
+        throw new Error("Workspace ID is not defined");
+      }
+
       const server = queryClient.getQueryData<Server | null>([USE_SERVER_QUERY_KEY, workspaceId, slug]);
       if (server) {
         const newServer = {
@@ -40,7 +44,7 @@ export function useUpdateToolsMutation() {
       }
 
       const client = createApiClient();
-      const response = await client.api.tools["update-tools"].$post({ json: { tools } });
+      const response = await client.api.tools["update-tools"].$post({ json: { workspaceId, tools } });
       const { error } = await response.json();
       if (error) throw new Error(error);
     },

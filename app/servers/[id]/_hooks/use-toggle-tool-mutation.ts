@@ -16,6 +16,10 @@ export function useToggleToolMutation() {
   const [workspaceId] = useCurrentWorkspaceStore();
   return useMutation({
     mutationFn: async ({ toolId, slug }: UseToggleToolMutationParameters) => {
+      if (!workspaceId) {
+        throw new Error("Workspace ID is not defined");
+      }
+
       const server = queryClient.getQueryData<Server | null>([USE_SERVER_QUERY_KEY, workspaceId, slug]);
       if (server) {
         const newServer = {
@@ -51,7 +55,7 @@ export function useToggleToolMutation() {
       }
 
       const client = createApiClient();
-      const response = await client.api.tools["toggle-tool"].$post({ json: { toolId } });
+      const response = await client.api.tools["toggle-tool"].$post({ json: { toolId, workspaceId } });
       const { error } = await response.json();
       if (error) throw new Error(error);
     },

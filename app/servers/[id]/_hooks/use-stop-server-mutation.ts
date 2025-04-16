@@ -16,8 +16,12 @@ export function useStopServerMutation() {
   const [workspaceId] = useCurrentWorkspaceStore();
   return useMutation({
     mutationFn: async ({ serverId }: UseStopServerMutationParameters) => {
+      if (!workspaceId) {
+        throw new Error("Workspace ID is not defined");
+      }
+
       const client = createApiClient();
-      const response = await client.api.servers["stop-server"].$post({ json: { serverId } });
+      const response = await client.api.servers["stop-server"].$post({ json: { serverId, workspaceId } });
       const { error } = await response.json();
       if (error) throw new Error(error);
     },

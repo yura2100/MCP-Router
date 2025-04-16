@@ -17,6 +17,10 @@ export function usePauseServerMutation() {
   const [workspaceId] = useCurrentWorkspaceStore();
   return useMutation({
     mutationFn: async ({ serverId, slug }: UsePauseServerMutationParameters) => {
+      if (!workspaceId) {
+        throw new Error("Workspace ID is not defined");
+      }
+
       const server = queryClient.getQueryData<Server | null>([USE_SERVER_QUERY_KEY, workspaceId, slug]);
       if (server) {
         const newServer = { ...server, status: "paused" };
@@ -33,7 +37,7 @@ export function usePauseServerMutation() {
       }
 
       const client = createApiClient();
-      const response = await client.api.servers["pause-server"].$post({ json: { serverId } });
+      const response = await client.api.servers["pause-server"].$post({ json: { serverId, workspaceId } });
       const { error } = await response.json();
       if (error) throw new Error(error);
     },

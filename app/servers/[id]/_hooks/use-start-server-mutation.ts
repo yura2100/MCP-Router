@@ -17,6 +17,10 @@ export function useStartServerMutation() {
   const [workspaceId] = useCurrentWorkspaceStore();
   return useMutation({
     mutationFn: async ({ serverId, slug }: UseStartServerMutationParameters) => {
+      if (!workspaceId) {
+        throw new Error("Workspace ID is not defined");
+      }
+
       const server = queryClient.getQueryData<Server | null>([USE_SERVER_QUERY_KEY, workspaceId, slug]);
       if (server) {
         const newServer = { ...server, status: "active" };
@@ -24,7 +28,7 @@ export function useStartServerMutation() {
       }
 
       const client = createApiClient();
-      const response = await client.api.servers["start-server"].$post({ json: { serverId } });
+      const response = await client.api.servers["start-server"].$post({ json: { serverId, workspaceId } });
       const { error } = await response.json();
       if (error) throw new Error(error);
     },
