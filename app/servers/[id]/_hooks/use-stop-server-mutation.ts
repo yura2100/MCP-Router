@@ -4,6 +4,7 @@ import {USE_SERVER_QUERY_KEY} from "@/app/servers/[id]/_hooks/use-server-query";
 import {USE_SERVERS_QUERY_KEY} from "@/app/servers/_hooks/use-servers-query";
 import {useToast} from "@/components/ui/use-toast";
 import {USE_DASHBOARD_SERVERS_QUERY_KEY} from "@/app/dashboard/_hooks/use-dashboard-servers-query";
+import {useCurrentWorkspaceStore} from "@/app/dashboard/_hooks/use-current-worspace-store";
 
 export type UseStopServerMutationParameters = {
   serverId: string;
@@ -12,6 +13,7 @@ export type UseStopServerMutationParameters = {
 export function useStopServerMutation() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
+  const [workspaceId] = useCurrentWorkspaceStore();
   return useMutation({
     mutationFn: async ({ serverId }: UseStopServerMutationParameters) => {
       const client = createApiClient();
@@ -21,9 +23,9 @@ export function useStopServerMutation() {
     },
     onSettled: () => {
       return Promise.all([
-        queryClient.invalidateQueries({ queryKey: [USE_SERVER_QUERY_KEY] }),
-        queryClient.invalidateQueries({ queryKey: [USE_SERVERS_QUERY_KEY] }),
-        queryClient.invalidateQueries({ queryKey: [USE_DASHBOARD_SERVERS_QUERY_KEY] }),
+        queryClient.invalidateQueries({ queryKey: [USE_SERVER_QUERY_KEY, workspaceId] }),
+        queryClient.invalidateQueries({ queryKey: [USE_SERVERS_QUERY_KEY, workspaceId] }),
+        queryClient.invalidateQueries({ queryKey: [USE_DASHBOARD_SERVERS_QUERY_KEY, workspaceId] }),
       ])
     },
     onSuccess: () => {

@@ -3,6 +3,7 @@ import {createApiClient} from "@/lib/api";
 import {Server, USE_SERVER_QUERY_KEY} from "@/app/servers/[id]/_hooks/use-server-query";
 import { useToast } from "@/components/ui/use-toast";
 import {DashboardServer, USE_DASHBOARD_SERVERS_QUERY_KEY} from "@/app/dashboard/_hooks/use-dashboard-servers-query";
+import {useCurrentWorkspaceStore} from "@/app/dashboard/_hooks/use-current-worspace-store";
 
 export type UseToggleToolMutationParameters = {
   toolId: string;
@@ -12,9 +13,10 @@ export type UseToggleToolMutationParameters = {
 export function useToggleToolMutation() {
   const queryClient = useQueryClient();
   const {toast} = useToast();
+  const [workspaceId] = useCurrentWorkspaceStore();
   return useMutation({
     mutationFn: async ({ toolId, slug }: UseToggleToolMutationParameters) => {
-      const server = queryClient.getQueryData<Server | null>([USE_SERVER_QUERY_KEY, slug]);
+      const server = queryClient.getQueryData<Server | null>([USE_SERVER_QUERY_KEY, workspaceId, slug]);
       if (server) {
         const newServer = {
           ...server,
@@ -26,10 +28,10 @@ export function useToggleToolMutation() {
             };
           }),
         };
-        queryClient.setQueryData([USE_SERVER_QUERY_KEY, slug], newServer);
+        queryClient.setQueryData([USE_SERVER_QUERY_KEY, workspaceId, slug], newServer);
       }
 
-      const dashboardServers = queryClient.getQueryData<DashboardServer[]>([USE_DASHBOARD_SERVERS_QUERY_KEY]);
+      const dashboardServers = queryClient.getQueryData<DashboardServer[]>([USE_DASHBOARD_SERVERS_QUERY_KEY, workspaceId]);
       if (dashboardServers) {
         const newDashboardServers = dashboardServers.map((server) => {
           const tool = server.tools.find(({ id }) => id === toolId);
@@ -45,7 +47,7 @@ export function useToggleToolMutation() {
             }),
           };
         });
-        queryClient.setQueryData([USE_DASHBOARD_SERVERS_QUERY_KEY], newDashboardServers);
+        queryClient.setQueryData([USE_DASHBOARD_SERVERS_QUERY_KEY, workspaceId], newDashboardServers);
       }
 
       const client = createApiClient();
@@ -55,8 +57,8 @@ export function useToggleToolMutation() {
     },
     onSettled: () => {
       return Promise.all([
-        queryClient.invalidateQueries({ queryKey: [USE_SERVER_QUERY_KEY] }),
-        queryClient.invalidateQueries({ queryKey: [USE_DASHBOARD_SERVERS_QUERY_KEY] }),
+        queryClient.invalidateQueries({ queryKey: [USE_SERVER_QUERY_KEY, workspaceId] }),
+        queryClient.invalidateQueries({ queryKey: [USE_DASHBOARD_SERVERS_QUERY_KEY, workspaceId] }),
       ])
     },
     onSuccess: () => {

@@ -4,6 +4,7 @@ import {USE_SERVER_QUERY_KEY} from "@/app/servers/[id]/_hooks/use-server-query";
 import {USE_SERVERS_QUERY_KEY} from "@/app/servers/_hooks/use-servers-query";
 import {useToast} from "@/components/ui/use-toast";
 import {USE_DASHBOARD_SERVERS_QUERY_KEY} from "@/app/dashboard/_hooks/use-dashboard-servers-query";
+import {useCurrentWorkspaceStore} from "@/app/dashboard/_hooks/use-current-worspace-store";
 
 export type UseUpdateServerMutationParameters = {
   serverId: string;
@@ -15,6 +16,7 @@ export type UseUpdateServerMutationParameters = {
 export function useUpdateServerMutation() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
+  const [workspaceId] = useCurrentWorkspaceStore();
   return useMutation({
     mutationFn: async ({ serverId, config }: UseUpdateServerMutationParameters) => {
       const client = createApiClient();
@@ -24,9 +26,9 @@ export function useUpdateServerMutation() {
     },
     onSettled: () => {
       return Promise.all([
-        queryClient.invalidateQueries({ queryKey: [USE_SERVER_QUERY_KEY] }),
-        queryClient.invalidateQueries({ queryKey: [USE_SERVERS_QUERY_KEY] }),
-        queryClient.invalidateQueries({ queryKey: [USE_DASHBOARD_SERVERS_QUERY_KEY] }),
+        queryClient.invalidateQueries({ queryKey: [USE_SERVER_QUERY_KEY, workspaceId] }),
+        queryClient.invalidateQueries({ queryKey: [USE_SERVERS_QUERY_KEY, workspaceId] }),
+        queryClient.invalidateQueries({ queryKey: [USE_DASHBOARD_SERVERS_QUERY_KEY, workspaceId] }),
       ])
     },
     onSuccess: () => {

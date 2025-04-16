@@ -3,6 +3,7 @@ import {createApiClient} from "@/lib/api";
 import {Server, USE_SERVER_QUERY_KEY} from "@/app/servers/[id]/_hooks/use-server-query";
 import { useToast } from "@/components/ui/use-toast";
 import {USE_DASHBOARD_SERVERS_QUERY_KEY} from "@/app/dashboard/_hooks/use-dashboard-servers-query";
+import {useCurrentWorkspaceStore} from "@/app/dashboard/_hooks/use-current-worspace-store";
 
 export type UseUpdateToolsMutationParameters = {
   slug: string;
@@ -17,9 +18,10 @@ export type UseUpdateToolsMutationParameters = {
 export function useUpdateToolsMutation() {
   const queryClient = useQueryClient();
   const {toast} = useToast();
+  const [workspaceId] = useCurrentWorkspaceStore();
   return useMutation({
     mutationFn: async ({ slug, tools }: UseUpdateToolsMutationParameters) => {
-      const server = queryClient.getQueryData<Server | null>([USE_SERVER_QUERY_KEY, slug]);
+      const server = queryClient.getQueryData<Server | null>([USE_SERVER_QUERY_KEY, workspaceId, slug]);
       if (server) {
         const newServer = {
           ...server,
@@ -34,7 +36,7 @@ export function useUpdateToolsMutation() {
             };
           }),
         };
-        queryClient.setQueryData([USE_SERVER_QUERY_KEY, slug], newServer);
+        queryClient.setQueryData([USE_SERVER_QUERY_KEY, workspaceId, slug], newServer);
       }
 
       const client = createApiClient();
@@ -44,8 +46,8 @@ export function useUpdateToolsMutation() {
     },
     onSettled: () => {
       return Promise.all([
-        queryClient.invalidateQueries({ queryKey: [USE_SERVER_QUERY_KEY] }),
-        queryClient.invalidateQueries({ queryKey: [USE_DASHBOARD_SERVERS_QUERY_KEY] })
+        queryClient.invalidateQueries({ queryKey: [USE_SERVER_QUERY_KEY, workspaceId] }),
+        queryClient.invalidateQueries({ queryKey: [USE_DASHBOARD_SERVERS_QUERY_KEY, workspaceId] })
       ])
     },
     onSuccess: () => {
