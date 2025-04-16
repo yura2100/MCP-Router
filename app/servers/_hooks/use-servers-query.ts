@@ -1,5 +1,6 @@
 import {useQuery} from "@tanstack/react-query";
 import {createBrowserClient} from "@/lib/supabase/clients/browser";
+import {useCurrentWorkspaceStore} from "@/app/dashboard/_hooks/use-current-worspace-store";
 
 export const USE_SERVERS_QUERY_KEY = "useServersQuery"
 
@@ -9,8 +10,9 @@ export type UseServersQueryParameters = {
 };
 
 export function useServersQuery(params: UseServersQueryParameters) {
+  const [workspaceId] = useCurrentWorkspaceStore();
   return useQuery({
-    queryKey: [USE_SERVERS_QUERY_KEY, params],
+    queryKey: [USE_SERVERS_QUERY_KEY, workspaceId, params],
     queryFn: async () => {
       const supabase = createBrowserClient();
       let query = supabase
@@ -27,8 +29,12 @@ export function useServersQuery(params: UseServersQueryParameters) {
           server_categories!inner (
             categories (name)
           ),
-          user_servers (status, is_starred)
+          workspace_servers (status)
         `);
+
+      if (workspaceId) {
+        query = query.eq("workspace_servers.workspace_id", workspaceId);
+      }
 
       if (params.search) {
         query = query.ilike("name", `%${params.search}%`);
@@ -41,7 +47,7 @@ export function useServersQuery(params: UseServersQueryParameters) {
       const { data } = await query;
       if (!data) return [];
       return data.map((server) => {
-        const [userServer] = server.user_servers;
+        const [workspaceServer] = server.workspace_servers;
         return {
           id: server.id,
           name: server.name,
@@ -51,8 +57,8 @@ export function useServersQuery(params: UseServersQueryParameters) {
           downloads: server.downloads,
           stars: server.stars,
           version: server.version,
-          isStarred: userServer?.is_starred ?? false,
-          status: userServer?.status ?? "not-started",
+          isStarred: false,
+          status: workspaceServer?.status ?? "not-started",
           categories: server.server_categories.map((category) => category.categories.name),
         };
       });

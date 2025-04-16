@@ -261,6 +261,54 @@ export type Database = {
           },
         ]
       }
+      user_workspace_tools: {
+        Row: {
+          created_at: string
+          custom_description: string
+          custom_name: string
+          id: string
+          status: string
+          tool_id: string
+          updated_at: string
+          user_workspace_id: string
+        }
+        Insert: {
+          created_at?: string
+          custom_description?: string
+          custom_name?: string
+          id?: string
+          status: string
+          tool_id: string
+          updated_at?: string
+          user_workspace_id: string
+        }
+        Update: {
+          created_at?: string
+          custom_description?: string
+          custom_name?: string
+          id?: string
+          status?: string
+          tool_id?: string
+          updated_at?: string
+          user_workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_workspace_tools_tool_id_fkey"
+            columns: ["tool_id"]
+            isOneToOne: false
+            referencedRelation: "tools"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_workspace_tools_user_workspace_id_fkey"
+            columns: ["user_workspace_id"]
+            isOneToOne: false
+            referencedRelation: "user_workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_workspaces: {
         Row: {
           created_at: string
@@ -289,6 +337,51 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "workspace_users_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      workspace_servers: {
+        Row: {
+          config: Json
+          created_at: string
+          id: string
+          server_id: string
+          status: string
+          updated_at: string
+          workspace_id: string
+        }
+        Insert: {
+          config?: Json
+          created_at?: string
+          id?: string
+          server_id: string
+          status: string
+          updated_at?: string
+          workspace_id: string
+        }
+        Update: {
+          config?: Json
+          created_at?: string
+          id?: string
+          server_id?: string
+          status?: string
+          updated_at?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workspace_servers_server_id_fkey"
+            columns: ["server_id"]
+            isOneToOne: false
+            referencedRelation: "servers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workspace_servers_workspace_id_fkey"
             columns: ["workspace_id"]
             isOneToOne: false
             referencedRelation: "workspaces"

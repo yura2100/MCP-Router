@@ -12,7 +12,7 @@ export function useWorkspacesQuery() {
       const supabase = createBrowserClient();
       const result = await supabase
         .from("user_workspaces")
-        .select("role, workspaces (id, name)");
+        .select("role, workspaces!inner (id, name)");
       if (result.error) return [];
       const workspaces = result.data.map((workspace) => ({
         id: workspace.workspaces.id,
