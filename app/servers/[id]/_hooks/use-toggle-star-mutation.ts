@@ -22,7 +22,7 @@ export function useToggleStarMutation() {
           isStarred: !server.isStarred,
           stars: !server.isStarred ? server.stars + 1 : server.stars - 1,
         };
-        queryClient.setQueryData([USE_SERVER_QUERY_KEY, workspaceId], newServer);
+        queryClient.setQueryData([USE_SERVER_QUERY_KEY, workspaceId, slug], newServer);
       }
 
       const client = createApiClient();

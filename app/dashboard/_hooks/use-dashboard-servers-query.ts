@@ -25,6 +25,7 @@ export function useDashboardServersQuery() {
           server_categories!inner (
             categories!inner (name)
           ),
+          user_server_stars (id),
           workspace_servers!inner (status),
           tools!inner (
             id,
@@ -50,6 +51,7 @@ export function useDashboardServersQuery() {
         downloads: server.downloads,
         stars: server.stars,
         version: server.version,
+        isStarred: server.user_server_stars.length > 0,
         status: server.workspace_servers[0].status,
         categories: server.server_categories.map((category) => category.categories.name),
         tools: server.tools.map((tool) => ({

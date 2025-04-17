@@ -35,3 +35,9 @@ export const UpdateServerSchema = z.object({
 });
 
 export type UpdateServerInput = z.infer<typeof UpdateServerSchema>;
+
+export const ToggleStarSchema = z.object({
+  serverId: z.string().uuid(),
+});
+
+export type ToggleStarInput = z.infer<typeof ToggleStarSchema>;

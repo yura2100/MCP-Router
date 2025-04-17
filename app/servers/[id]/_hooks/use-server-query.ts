@@ -31,6 +31,7 @@ export function useServerQuery({ slug }: UseServerQueryParameters) {
           server_categories!inner (
             categories!inner (name)
           ),
+          user_server_stars (id),
           workspace_servers (status, config),
           tools!inner (
             id,
@@ -66,7 +67,7 @@ export function useServerQuery({ slug }: UseServerQueryParameters) {
         downloads: data.downloads,
         stars: data.stars,
         version: data.version,
-        isStarred: false,
+        isStarred: data.user_server_stars.length > 0,
         config: data.config as Record<string, any>,
         userConfig: (workspaceServer?.config ?? {}) as Record<string, any>,
         status: workspaceServer?.status ?? "not-started",

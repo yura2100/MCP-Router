@@ -1,12 +1,12 @@
 import {Hono} from "hono";
 import {auth} from "@/server/middlewares/auth";
-import {z} from "zod";
 import {sValidator} from "@hono/standard-validator";
 import {
   PauseServerSchema,
   RestartServerSchema,
   StartServerSchema,
   StopServerSchema,
+  ToggleStarSchema,
   UpdateServerSchema,
 } from "@/server/features/servers/schemas";
 import {startServer} from "@/server/features/servers/service/start-server";
@@ -14,6 +14,7 @@ import {restartServer} from "@/server/features/servers/service/restart-server";
 import {pauseServer} from "@/server/features/servers/service/pause-server";
 import {stopServer} from "@/server/features/servers/service/stop-server";
 import {updateServer} from "@/server/features/servers/service/update-server";
+import {toggleStar} from "@/server/features/servers/service/toggle-star";
 
 export const serversRouter = new Hono()
   .post("/start-server", auth(), sValidator("json", StartServerSchema), async (ctx) => {
@@ -46,39 +47,9 @@ export const serversRouter = new Hono()
     await updateServer(input, userId);
     return ctx.json({ data: null, error: null }, 201);
   })
-  .post("/toggle-star", auth(), sValidator("json", z.object({ serverId: z.string().uuid() })), async (ctx) => {
-    // const userId = ctx.var.user.id;
-    // const { serverId } = ctx.req.valid("json");
-    // const supabase = createServerClient();
-    // const selectResult = await supabase
-    //   .from("user_servers")
-    //   .select("is_starred")
-    //   .eq("user_id", userId)
-    //   .eq("server_id", serverId);
-    // if (selectResult.error) {
-    //   return ctx.json({ data: null, error: "Failed to toggle star" }, 500);
-    // }
-    // const [userServer] = selectResult.data;
-    // if (!userServer) {
-    //   return ctx.json({ data: null, error: "Failed to toggle star" }, 500);
-    // }
-    // const updateUserServersResult = await supabase
-    //   .from("user_servers")
-    //   .update({ is_starred: !userServer.is_starred })
-    //   .eq("user_id", userId)
-    //   .eq("server_id", serverId);
-    // if (updateUserServersResult.error) {
-    //   return ctx.json({ data: null, error: "Failed to toggle star" }, 500);
-    // }
-    // const operation = userServer.is_starred ? "decrement" : "increment";
-    // const updateServersResult = await supabase.rpc(operation, {
-    //   table_name: "servers",
-    //   field_name: "stars",
-    //   row_id: serverId,
-    //   x: 1,
-    // });
-    // if (updateServersResult.error) {
-    //   return ctx.json({ data: null, error: "Failed to toggle star" }, 500);
-    // }
+  .post("/toggle-star", auth(), sValidator("json", ToggleStarSchema), async (ctx) => {
+    const userId = ctx.var.user.id;
+    const input = ctx.req.valid("json");
+    await toggleStar(input, userId);
     return ctx.json({ data: null, error: null }, 201);
   });

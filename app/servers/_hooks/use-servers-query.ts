@@ -27,8 +27,9 @@ export function useServersQuery(params: UseServersQueryParameters) {
           stars,
           version,
           server_categories!inner (
-            categories (name)
+            categories!inner (name)
           ),
+          user_server_stars (id),
           workspace_servers (status)
         `);
 
@@ -57,7 +58,7 @@ export function useServersQuery(params: UseServersQueryParameters) {
           downloads: server.downloads,
           stars: server.stars,
           version: server.version,
-          isStarred: false,
+          isStarred: server.user_server_stars.length > 0,
           status: workspaceServer?.status ?? "not-started",
           categories: server.server_categories.map((category) => category.categories.name),
         };
