@@ -1,7 +1,7 @@
 import { Hono } from "hono";
-import { serversRouter } from "@/server/features/servers";
-import { toolsRouter } from "@/server/features/tools";
-import { workspacesRouter } from "@/server/features/workspaces";
+import { serversRouter } from "@/server/features/servers/router";
+import { toolsRouter } from "@/server/features/tools/router";
+import { workspacesRouter } from "@/server/features/workspaces/router";
 
 export const app = new Hono()
   .basePath('/api')
