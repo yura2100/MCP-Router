@@ -30,12 +30,12 @@ export function useToggleStarMutation() {
       const { error } = await response.json();
       if (error) throw new Error(error);
     },
-    onSettled: () => {
+    onSettled: (_data, _error, { slug }) => {
       return Promise.all([
-        queryClient.invalidateQueries({ queryKey: [USE_SERVER_QUERY_KEY, workspaceId] }),
+        queryClient.invalidateQueries({ queryKey: [USE_SERVER_QUERY_KEY, workspaceId, slug] }),
         queryClient.invalidateQueries({ queryKey: [USE_SERVERS_QUERY_KEY, workspaceId] }),
         queryClient.invalidateQueries({ queryKey: [USE_DASHBOARD_SERVERS_QUERY_KEY, workspaceId] }),
-      ])
+      ]);
     },
   })
 }

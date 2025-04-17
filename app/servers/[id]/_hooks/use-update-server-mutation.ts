@@ -8,6 +8,7 @@ import {useCurrentWorkspaceStore} from "@/app/dashboard/_hooks/use-current-worsp
 
 export type UseUpdateServerMutationParameters = {
   serverId: string;
+  slug: string;
   config: {
     connection: Record<string, any>;
   };
@@ -28,12 +29,12 @@ export function useUpdateServerMutation() {
       const { error } = await response.json();
       if (error) throw new Error(error);
     },
-    onSettled: () => {
+    onSettled: (_data, _error, { slug }) => {
       return Promise.all([
-        queryClient.invalidateQueries({ queryKey: [USE_SERVER_QUERY_KEY, workspaceId] }),
+        queryClient.invalidateQueries({ queryKey: [USE_SERVER_QUERY_KEY, workspaceId, slug] }),
         queryClient.invalidateQueries({ queryKey: [USE_SERVERS_QUERY_KEY, workspaceId] }),
         queryClient.invalidateQueries({ queryKey: [USE_DASHBOARD_SERVERS_QUERY_KEY, workspaceId] }),
-      ])
+      ]);
     },
     onSuccess: () => {
       toast({

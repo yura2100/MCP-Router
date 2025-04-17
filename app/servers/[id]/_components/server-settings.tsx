@@ -42,7 +42,7 @@ export function ServerSettings({ server, setTab }: ServerSettingsProps) {
               className="flex items-center"
               disabled={isPending}
               onClick={async () => {
-                await stopServerAsync({ serverId: server.id });
+                await stopServerAsync({ serverId: server.id, slug: server.slug });
                 setTab("overview");
               }}
             >
@@ -82,7 +82,7 @@ export function ServerSettings({ server, setTab }: ServerSettingsProps) {
         <Button
           className="ml-auto"
           disabled={isPending}
-          onClick={() => updateServer({ serverId: server.id, config: { connection } })}
+          onClick={() => updateServer({ serverId: server.id, slug: server.slug, config: { connection } })}
         >
           <Save className="h-4 w-4 mr-2" />
           Save Changes
