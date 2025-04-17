@@ -10,11 +10,11 @@ export function useWorkspacesQuery() {
     queryKey: [USE_WORKSPACES_QUERY],
     queryFn: async () => {
       const supabase = createBrowserClient();
-      const result = await supabase
+      const { data } = await supabase
         .from("user_workspaces")
         .select("role, workspaces!inner (id, name)");
-      if (result.error) return [];
-      const workspaces = result.data.map((workspace) => ({
+      if (!data) return [];
+      const workspaces = data.map((workspace) => ({
         id: workspace.workspaces.id,
         name: workspace.workspaces.name,
         role: workspace.role,

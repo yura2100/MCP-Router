@@ -10,9 +10,10 @@ export function useConnectionQuery() {
       const supabase = createBrowserClient();
       const { data } = await supabase
         .from("user_settings")
-        .select("secret");
+        .select("secret")
+        .single();
       if (!data) return null;
-      return { secret: data[0].secret };
+      return { secret: data.secret };
     },
     initialData: null,
   });

@@ -52,27 +52,26 @@ export function useServerQuery({ slug }: UseServerQueryParameters) {
           .eq("tools.user_workspace_tools.user_workspaces.workspace_id", workspaceId);
       }
 
-      const { data } = await query;
-      const server = data?.[0];
-      if (!server) return null;
-      const [workspaceServer] = server.workspace_servers;
+      const { data } = await query.single();
+      if (!data) return null;
+      const [workspaceServer] = data.workspace_servers;
       return {
-        id: server.id,
-        name: server.name,
-        slug: server.slug,
-        shortDescription: server.short_description,
-        description: server.description,
-        maintainer: server.maintainer,
-        documentation: server.documentation,
-        downloads: server.downloads,
-        stars: server.stars,
-        version: server.version,
+        id: data.id,
+        name: data.name,
+        slug: data.slug,
+        shortDescription: data.short_description,
+        description: data.description,
+        maintainer: data.maintainer,
+        documentation: data.documentation,
+        downloads: data.downloads,
+        stars: data.stars,
+        version: data.version,
         isStarred: false,
-        config: server.config as Record<string, any>,
+        config: data.config as Record<string, any>,
         userConfig: (workspaceServer?.config ?? {}) as Record<string, any>,
         status: workspaceServer?.status ?? "not-started",
-        categories: server.server_categories.map((category) => category.categories.name),
-        tools: server.tools.map((tool) => {
+        categories: data.server_categories.map((category) => category.categories.name),
+        tools: data.tools.map((tool) => {
           const [userWorkspaceTool] = tool.user_workspace_tools;
           return {
             id: tool.id,
