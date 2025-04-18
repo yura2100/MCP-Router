@@ -9,6 +9,7 @@ import {CopyButton} from "@/components/ui/copy-button";
 
 export function AIToolConnections() {
   const { data } = useConnectionQuery();
+  const url = `https://router.mcp-router.com/mcp/${data?.secret ?? ""}`;
 
   return (
     <div className="space-y-4">
@@ -33,11 +34,11 @@ export function AIToolConnections() {
             <div className="flex gap-2">
               <PasswordInput
                 id="connection-link"
-                value={`https://mcp.mcp-router.com/${data?.secret ?? ""}`}
+                value={url}
                 readOnly
                 className="font-mono text-sm"
               />
-              <CopyButton textToCopy="https://api.mcprouter.com/connect/ai-tools/v1" />
+              <CopyButton textToCopy={url} />
             </div>
             <p className="text-xs text-muted-foreground mt-2">
               This link is unique to your account. Do not share it with others.
