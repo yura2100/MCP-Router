@@ -33,7 +33,7 @@ export async function startServer({ serverId, workspaceId }: StartServerInput, u
   await supabase
     .from("workspace_servers")
     .insert({
-      workspace_id: userId,
+      workspace_id: workspaceId,
       server_id: serverId,
       status: isConfigured ? "active" : "misconfigured",
     })
