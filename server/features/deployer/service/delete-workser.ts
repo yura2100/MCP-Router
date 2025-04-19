@@ -1,9 +1,8 @@
 export async function deleteWorker(slug: string, workspaceId: string) {
-  const token = btoa(`${process.env.DEPLOYER_USERNAME}:${process.env.DEPLOYER_PASSWORD}`);
   const response = await fetch(`${process.env.DEPLOYER_URL}/delete`, {
     method: "POST",
     headers: {
-      "Authorization": `Basic ${token}`,
+      "Authorization": `Bearer ${process.env.DEPLOYER_API_TOKEN}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ slug, workspaceId }),
